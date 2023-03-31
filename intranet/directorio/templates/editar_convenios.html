@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
+</div>
+<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+<h2>Edicion de convenio</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default" for="id_nombre" >Nombre:</span>
+      <input required  type="text" name="nombre" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_nombre" value="{{form.nombre.initial}}">
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default" for="id_email" >Correo electronico:</span>
+      <input required value="{{form.email.initial}}" type="email" name="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_email">
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default" for="id_telefono" >Telefono:</span>
+      <input required type="text" value="{{form.telefono.initial}}" name="telefono" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_telefono">
+    </div>
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default" for="{{ form.fecha_inicial.id_for_label }}" >Fecha inicial:</span>
+      {{form.fecha_inicial}}
+    <div class="input-group mb-3">
+      <span class="input-group-text" id="inputGroup-sizing-default" for="id_fecha_final" >Fecha final:</span>
+      {{form.fecha_final}}
+    </div>
+    <div>
+        {{form.archivo}}
+    </div>
+    <div>
+    <button class="btn btn-secondary" type="submit">Guardar</button>
+    </div>
+</form>
+</div>
+
+{% endblock %}

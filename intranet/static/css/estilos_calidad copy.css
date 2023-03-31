@@ -1,0 +1,476 @@
+
+@font-face {
+  font-family: Heycomic;
+  src: url('Hey Comic.otf');
+}
+
+@font-face {
+  font-family: doodlegum;
+  src: url('DoodleGum.ttf');
+}
+
+@font-face {
+  font-family: wallnotes;
+  src: url('wallNotes.otf');
+}
+
+@font-face {
+  font-family: likeeat;
+  src: url('LikeEat.otf');
+}
+
+@font-face {
+  font-family: starbold;
+  src: url('StarBold.otf');
+}
+
+@font-face {
+  font-family: coolvetica;
+  src: url('coolveticarg.otf'),url('coolveticargit.otf'),url('coolveticacrammedrg.otf'),url('coolveticacondensedrg.otf');
+}
+
+@import url("https://fonts.googleapis.com/css?family=Varela+Round");
+body {
+    background-image: url("../img/fondo_calidad1.jpg") ;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    height:100vh;
+  }
+
+#p1{
+    font-family:coolvetica;
+    font-size:16px;
+    position:relative;
+    top:5vh;
+    left:50%;
+}
+#p2{
+  font-family:coolvetica;
+  text-shadow: 0 0 5px #f1f7f7;
+  font-size:20px;
+  position:relative;
+  color:#7006ad;
+  left:30%;
+}
+#p3{
+  font-family:coolvetica;
+  font-size:47px;
+  text-shadow: 0 0  10px#e9ecec;
+  position:relative;
+  left:30%;
+  color:#7006ad;
+  top:-6.7vh;
+}
+
+#titulo, #titulo:after{
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  opacity: 0.9;
+  position: relative;
+  width: 19em;
+  height: 19em;
+  left:10%;
+}
+
+#titulo {
+  background-color: rgba(255, 255, 255, 0.521);
+  opacity:0.8;
+  border-top: 15px solid rgb(157, 71, 197);
+  border-right: 15px solid rgb(115, 142, 233);
+  border-bottom: 15px solid rgb(212, 191, 96);
+  border-left: 15px solid rgb(82, 228, 155);
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-duration: 2.5s;
+  animation-name: titulo-loading;
+  box-shadow: 2px 2px 15px 5px black;
+}
+
+#titulo:hover{
+  background-color: rgba(196, 228, 238, 0.774);
+}
+
+@keyframes titulo-loading{
+25%{
+  border-top: 15px solid  rgb(82, 228, 155);
+  border-right: 15px solid  rgb(157, 71, 197);
+  border-bottom: 15px solid  rgb(115, 142, 233);
+  border-left: 15px solid rgb(212, 191, 96);
+}
+50%{
+  border-top: 15px solid  rgb(212, 191, 96);
+  border-right: 15px solid  rgb(82, 228, 155);
+  border-bottom: 15px solid  rgb(157, 71, 197);
+  border-left: 15px solid rgb(115, 142, 233);
+}
+75%{
+  border-top: 15px solid  rgb(115, 142, 233);
+  border-right: 15px solid  rgb(212, 191, 96);
+  border-bottom: 15px solid  rgb(82, 228, 155);
+  border-left: 15px solid rgb(157, 71, 197);
+}
+100%{
+  border-top: 15px solid rgb(157, 71, 197);
+  border-right: 15px solid rgb(115, 142, 233);
+  border-bottom: 15px solid rgb(212, 191, 96);
+  border-left: 15px solid rgb(82, 228, 155);
+}
+}
+
+
+#p_principal{
+  font-family:starbold;
+  font-size: 65px;
+  position: relative;
+  left:10%;
+  top:10vh;
+  overflow: hidden;
+  color:rgb(98, 0, 143);
+}
+#p_principal:hover{
+  color: rgb(56, 0, 70);
+}
+
+#p_secundario{
+  font-family:starbold;
+  position: relative;
+  font-size:35px;
+  left:50%;
+  top:2vh;
+  color:rgb(151, 16, 90);
+  overflow: hidden;
+}
+
+#img_circulo{
+  position:relative;
+  left:15%;
+  opacity: 0.8;
+  top:-6vh;
+  font-size: 14px;
+  font-family:Heycomic;
+}
+
+ul{
+list-style: none;
+}
+
+#lista_beneficios{
+  top:5vh;
+  background-color: blanchedalmond;
+  color: rgb(125, 125, 125);
+  position: relative;
+  align-items: center;
+  align-content: center;
+  padding: 0.5vh;
+  font-family: coolvetica;
+  border-radius:20vh;
+  margin-bottom: 0.5em;
+  box-shadow: 0 0 5px 2px rgba(63, 30, 0, 0.822);
+}
+
+#lista_beneficios img{
+  margin-left: 1%;
+  background-color: transparent;
+  border-radius:50%;
+  margin-right: 2%;
+}
+
+#lista_beneficios .nomostrado{
+  display:none;
+}
+
+#lista_beneficios .mostrado:hover + .nomostrado {
+  display:block;
+  color:black;
+  font-size: 12px;
+  font-stretch:condensed;
+  text-align: justify;
+  left:2%;
+  padding: 1%;
+}
+
+#lista_beneficios img:hover{
+  opacity: 1;
+}
+
+
+#lista_beneficios:nth-child(1){
+  background:linear-gradient(to right bottom, rgb(153, 75, 226),rgb(184, 164, 204));
+  font-size: 15px;
+  color: #c1c1c1;
+}
+#lista_beneficios:nth-child(1):before{
+  content: "\2022";
+  color:rgb(153, 75, 226);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+#lista_beneficios:nth-child(2){
+  background:linear-gradient(to right bottom,rgb(219, 120, 228),rgb(214, 168, 218));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:10%;
+}
+#lista_beneficios:nth-child(2):before{
+  content: "\2022";
+  color:rgb(219, 120, 228);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+#lista_beneficios:nth-child(3){
+  background:linear-gradient(to right bottom,rgb(0, 107, 168) 55%,rgb(122, 185, 221));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:20%;
+}
+#lista_beneficios:nth-child(3):before{
+  content: "\2022";
+  color:rgb(0, 107, 168);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+#lista_beneficios:nth-child(4){
+  background:linear-gradient(to right bottom,rgb(219, 80, 0),rgb(230, 151, 106));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:30%;
+}
+#lista_beneficios:nth-child(4):before{
+  content: "\2022";
+  color:rgb(168, 62, 0);
+  font-size: 18px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+#lista_beneficios:nth-child(5){
+  background:linear-gradient(to right bottom,rgb(1, 116, 68),rgb(106, 230, 137));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:40%;
+}
+#lista_beneficios:nth-child(5):before{
+  content: "\2022";
+  color:rgb(1, 116, 68);
+  font-size: 18px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+#lista_beneficios:nth-child(6){
+  background:linear-gradient(to right bottom,rgb(202, 0, 84) 55%,rgb(230, 106, 147));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:40%;
+}
+#lista_beneficios:nth-child(6):before{
+  content: "\2022";
+  color:rgb(202, 0, 84);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+#lista_beneficios:nth-child(7){
+  background:linear-gradient(to right bottom,rgb(3, 0, 161) ,rgb(120, 139, 247));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:40%;
+}
+#lista_beneficios:nth-child(7):before{
+  content: "\2022";
+  color:rgb(3, 0, 161);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+#lista_beneficios:nth-child(8){
+  background:linear-gradient(to right bottom,rgb(141, 0, 0),rgb(209, 73, 103));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:30%;
+}
+#lista_beneficios:nth-child(8):before{
+  content: "\2022";
+  color:rgb(141, 0, 0);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+
+#lista_beneficios:nth-child(9){
+  background:linear-gradient(to right bottom,rgb(0, 107, 93),rgb(122, 246, 250));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:20%;
+
+}
+#lista_beneficios:nth-child(9):before{
+  content: "\2022";
+  color:rgb(0, 107, 93);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+#lista_beneficios:nth-child(10){
+  background:linear-gradient(to right bottom,rgb(76, 4, 49),rgb(250, 122, 235));
+  font-size: 15px;
+  color: #c1c1c1;
+  left:10%;
+}
+#lista_beneficios:nth-child(10):before{
+  content: "\2022";
+  color:rgb(76, 4, 49);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 25px; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+
+#lista_beneficios:nth-last-child(1){
+  background:linear-gradient(to right bottom,rgb(4, 76, 34),rgb(122, 250, 190));
+  font-size: 15px;
+  color: #c1c1c1;
+}
+
+#lista_beneficios:nth-last-child(1):before{
+  content: "\2022";
+  color:rgb(7, 80, 0);
+  font-size: 25px;
+  font-weight: bold; /* If you want it to be bold */
+  display: inline-block; /* Needed to add space between the bullet and the text */
+  width: 10%; /* Also needed for space (tweak if needed) */
+  margin-left: -1em;
+}
+#alinks, #alinks:visited{
+  text-decoration: none;
+  color: rgb(226, 226, 226);
+}
+
+.avatar_letters{
+  font-family: wallnotes;
+  font-size: 25px;
+  position: relative;
+  width: fit-content;
+  top:3%;
+  left:1%;
+  overflow: hidden;
+  text-align:center;
+	background: linear-gradient(to right, #f1434346 0%, #a5698a52 50%,#e6aed048);
+  color:#000000;
+  opacity: 0.7;
+  border-bottom: 20px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+#div_volver{
+  position:absolute;
+  left:90%;
+  top:10%;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  box-shadow: 0 0 15px black;
+  align-items: center;
+  align-content: center;
+}
+
+#volver{
+  width:34px;
+  height:34px;
+}
+
+#volver:hover{
+  width:40px;
+  height:40px;
+}
+#div_volver:hover{
+  width:40px;
+  height:40px;
+}
+@media (min-width: 0px) and (max-width: 575px) {
+  #p1{
+    font-family:coolvetica;
+    font-size:16px;
+    position:relative;
+    top:3vh;
+    left:48%;
+  }
+  #p2{
+  top:-1vh;
+  }
+
+  #p_secundario{
+    top:3vh;
+  }
+  
+  #img_circulo{
+    top:-4vh;
+  }
+
+  ul{
+    padding-bottom: 2ex;
+  }
+  #titulo, #titulo:after{
+    left:15%;
+    top:-5vh;
+  }
+
+  #lista_beneficios{
+    top: 0vh;
+    list-style:none;
+    left:0;
+  }
+  #lista_beneficios:nth-child(1),
+  #lista_beneficios:nth-child(2),
+  #lista_beneficios:nth-child(3),
+  #lista_beneficios:nth-child(4),
+  #lista_beneficios:nth-child(5),
+  #lista_beneficios:nth-child(6),
+  #lista_beneficios:nth-child(7),
+  #lista_beneficios:nth-child(8),
+  #lista_beneficios:nth-child(9){
+    left:0;
+  }
+
+  #div_volver{
+    position:absolute;
+    top:20%;
+    width: 34px;
+    height: 34px;
+  }
+
+} 

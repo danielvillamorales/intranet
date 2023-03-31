@@ -1,0 +1,208 @@
+*{
+  margin: 0;
+  outline: none;
+  box-sizing: border-box;
+}
+body{
+  background-color:rgb(0, 9, 29);
+  overflow-x: hidden;
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#imagenes{
+  margin-top:10%;
+}
+.img{
+  position: relative;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(520px ,#244474,transparent 50% );
+  margin-top:-50px;
+  margin-left:20%
+}
+
+.intranet-icon{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:200px;
+  border-radius: 50%;
+  box-shadow: 3px 3px 15px rgb(255, 255, 255);
+  height: 200px;
+}
+
+.social-icons{
+  height:100%;
+  animation: rotation 60s linear infinite;
+}
+@keyframes rotation {
+  100%{
+    transform:rotate(360deg);
+  }
+}
+
+.social-icons img{
+  position:absolute;
+  border-radius: 50%;
+  box-shadow: 3px 3px 10px rgb(194, 38, 173);
+}
+/**
+.social-icons a img:nth-child(1){
+  top: 0;
+  left:44%; 
+  width:60px;
+  height:60px; 
+}
+
+.social-icons a img:nth-child(2){
+  top: 30%;
+  right:0; 
+  width:60px;
+  height:60px; 
+}
+
+.social-icons a img:nth-child(3){
+  top:80%;
+  left:70%; 
+  width:60px;
+  height:60px; 
+}
+
+
+.social-icons a img:nth-child(4){
+  top: 30%;
+  left:0; 
+  width:60px;
+  height: 60px; 
+}
+
+.social-icons a img:nth-child(5){
+  top: 80%;
+  left:15%; 
+  width:60px;
+  height: 60px; 
+}*/
+#uno{
+  top: 0;
+  left:44%; 
+  width:60px;
+  height:60px; 
+}
+
+#dos{
+  top: 30%;
+  right:0; 
+  width:60px;
+  height:60px; 
+}
+
+#tres{
+  top:80%;
+  left:70%; 
+  width:60px;
+  height:60px; 
+}
+
+
+#cuatro{
+  top: 30%;
+  left:0; 
+  width:60px;
+  height: 60px; 
+}
+
+#cinco{
+  top: 80%;
+  left:15%; 
+  width:60px;
+  height: 60px; 
+}
+
+
+/**
+termina la configuracion de rotacion 
+*/
+
+
+
+label{
+  color: rgb(199, 199, 199);
+  margin-top: 5%;
+  margin-left: 30%;
+  font-size:16px;
+}
+input{
+  margin-left:10%;
+  margin-right:10%;
+  size: auto;
+  width: 80%;
+}
+
+#formulario-login{
+  margin-top:30%;
+  margin-left: 10%;
+  margin-right:10%;
+  box-shadow: 5px 5px 10px #244474 transparent 0.616;
+}
+
+#divlogologin{
+  padding: 0.5%;
+  margin-right:10%;
+  margin-left:10%;
+  margin-bottom: 2%;
+  top: 2%;
+  align-content: center;
+  align-items: center;
+}
+
+#divform{
+  background-color:#244474;
+  padding: 0.5%;
+  margin-top:1%;
+  border-radius: 10%;
+  margin-left: 10%;
+  margin-right:10%;
+  align-content: center;
+  align-items: center;
+  box-shadow: 5px 5px 15px 10px  #406fb4;
+}
+
+#logologin{
+  height: 60%;
+  width: 60%;
+  align-content: center;
+  position:relative;
+}
+
+#divbutton{
+  padding: 2%;
+  margin-top:2%;
+  margin-left: 10%;
+  margin-right:10%;
+  margin-bottom: 10%;
+  align-content: center;
+  align-items: center;
+}
+
+@media (min-width: 200px) and (max-width: 550px) { 
+
+  .img{
+    position: relative;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(520px ,#9fb7e4,transparent 50% );
+    margin-top:-50px;
+    margin-left: 0;
+  }
+
+  #formulario-login{
+    margin-top:10%;
+    margin-left: 30%;
+    margin-right:0;
+  }
+  #imagenes{
+    margin-top:30%;
+  }
+ }
+

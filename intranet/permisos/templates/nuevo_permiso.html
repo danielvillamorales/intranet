@@ -1,0 +1,63 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+    <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12 col-12 container-fluid" id="contenido_directorio" >
+        {% if messages %}
+            {% for message in messages %}
+            <ul >
+                <li {% if message.tags %} 
+                class="alert alert-{%if message.tags == 'error' %}danger{% else %}{{ message.tags }} {%endif%}  alert-dismissible fade show"{% endif %} role="alert">{{ message }} </li>
+            </ul>
+            {% endfor %}
+        
+        {% endif %}
+        <form method="POST" id="formnewpermiso">
+            {% csrf_token %}
+            <div>
+                <p>Solicitado Por:</p>
+                <select class="form-select" name="usuariodepermiso" required id="id_usuariodepermiso">
+                    {%for u in usuarios %}
+                        <option value="{{u.id}}" >{{u.first_name.capitalize}} {{u.last_name.capitalize}}</option>
+                    {%endfor%}
+                </select>
+            </div>
+            <!--<div>{{formulario.tipopermiso}}</div>-->
+            <div>
+                <p>Motivo:</p>
+                <select class="form-select" name="tipopermiso" required id="id_tipopermiso" onchange="habilitar(this.value)">
+                    <option value=""></option>
+                {%for m in motivos %}
+                    <option value="{{m.id}}">{{m.descripcion}}</option>
+                {%endfor%}
+            </select>
+            </div>
+            <div>
+                <p id="pid_beneficio" name="pbeneficio" display="none">Beneficio:</p>
+                <select required class="form-select" id="id_beneficio" name="beneficio" display="none">
+                    <option value=""></option>
+                    {%for b in beneficios %}
+                        <option value="{{b.id}}">{{b.nombre}}</option>
+                    {%endfor%} 
+                </select>
+            </div>
+            <div>
+                <p>Fechas:</p>
+                <div class="input-group mb-3">
+                    <input type="datetime-local" class="form-control" required id="id_fechainicial" name="get_fechainicial" onchange="habilitar_boton('inicial')" placeholder="Fecha inicial" aria-label="Username">
+                    <span class="input-group-text">&</span>
+                    <input type="datetime-local" class="form-control" required  id="id_fechafinal" name="get_fechafinal" placeholder="Fecha Final" onchange="habilitar_boton('final')" aria-label="Server">
+                </div>
+            </div>
+            <div>
+                <p>Descripcion:</p>
+                <textarea  required placeholder="Escribe los detalles de tu permiso..." class="form-control input-lg" id="id_descripcion" name="descripcion" type="text" rows="3"></textarea>
+            </div>
+            <diV>
+                <button type="submit" class="btn btn-dark" id="button-agregar">Grabar</button>
+            </diV>
+
+        </form>
+    </div>
+    <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1" ></div>
+{% endblock %}

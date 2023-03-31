@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
+</div>
+<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    <div class="container-fluid" >       
+        <div class="data-container">
+            <a href="{% url 'directorio'%}" title="Directorio"><span class="btndir">Directorio</span></a>
+        </div>         
+    </div>
+    <div class="container-fluid" id="idnavtablist">
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Directorio</button>
+              <button class="nav-link" id="nav-almaces-tab" data-bs-toggle="tab" data-bs-target="#nav-almacenes" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Directorio Almacenes</button>
+              <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Lineas Locales Nacionales</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <form method='post'>{% csrf_token %}
+                    <div class="input-group mb-3" id="busqueda_dir">
+                        <input type="text" name="buscar" class="form-control" placeholder="Buscar datos..." id="buscardor-directorio" aria-label="Recipient's username" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button> 
+                    </div>
+                </form>
+                <div class="table"  id="divtable">
+                    <table class="table table-hover" id="tabla_directorio">
+                        <thead>
+                            <tr>
+                                <th class=" btn-dark">Dependencia</th>
+                                <th class=" btn-dark">Cargo</th>
+                                <th class=" btn-dark">Empleado</th>
+                                <th class=" btn-dark">Extension</th>
+                                <th class=" btn-dark">Email</th>
+                            </tr>
+                        </thead>
+                        <tbody class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                        {%for d in directorio %}
+                                <tr class="accordion-header" id="heading{{d.id}}" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapse{{d.id}}" aria-expanded="true" aria-controls="collapse{{d.id}}">
+                                    <td id="valorestabla">{{d.sede}}</td>
+                                    <td id="valorestabla">{{d.cargo}}</td>
+                                    <td id="valorestabla">{{d.usuario}}</td>
+                                    <td id="valorestabla">{{d.extension}}</td>
+                                    <td id="valorestabla">{{d.email}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="5" class="p-0">
+                                        <div id="collapse{{d.id}}" class="accordion-collapse collapse sow" aria-labelledby="heading{{d.id}}" data-bs-parent="#accordionExample">
+                                            <div class="accordion-body">
+                                                <table class="table table-dark table-striped table-hover">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <div id="detalletable"><b>Nombre</b></div>
+                                                                <div id="valorsubtable">{{d.usuario}}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="detalletable"><b>Extension</b></div>
+                                                                <div id="valorsubtable">{{d.extension}}</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div id="detalletable"><b>Cargo</b></div>
+                                                                <div id="valorsubtable">{{d.cargo}}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="detalletable"><b>Numero Telefonico - Celular</b></div>
+                                                                <div id="valorsubtable">{{d.telefono}}</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div id="detalletable"><b>Departamento</b></div>
+                                                                <div id="valorsubtable">{{d.sede}}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="detalletable"><b>Correo Electronico</b></div>
+                                                                <div id="valorsubtable">{{d.email}}</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div id="detalletable"><b>Direccion</b></div>
+                                                                <div id="valorsubtable">{{d.direccion}}</div>
+                                                            </td>
+                                                            <td>
+                                                                <div id="detalletable"><b>Ciudad</b></div>
+                                                                <div id="valorsubtable">{{d.ciudad}}</div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                        {% endfor %}
+                        </div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-almacenes" role="tabpanel" aria-labelledby="nav-almacenes-tab">
+                <div class="table"  id="divtable">
+                    <table class="table table-hover" id="tabla_directorio">
+                        <thead>
+                            <tr>
+                                <th class=" btn-dark">Almacen</th>
+                                <th class=" btn-dark">Ciudad</th>
+                                <th class=" btn-dark">Direccion & Horario</th>
+                                <th class=" btn-dark">Correo & Telefono</th>
+                                <th class=" btn-dark">Contacto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in diralm%}
+                            <tr>
+                                <td>{{a.almacen}}</td>
+                                <td>{{a.ciudad}}</td>
+                                <td>
+                                    <ul>
+                                        <li><b>Direccion:</b>{{a.direccion}}</li>
+                                        <li><b>Horario:</b> {{a.horario}}</li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li><b>Telefono:</b> {{a.telefono}}</li>
+                                        <li><b>Correo:</b> {{a.correo}}</li>
+                                    <ul>
+                                </td>
+                                <td>{{a.contacto}}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="table"  id="divtable">
+                <table class="table table-hover" id="tabla_directorio">
+                    <thead>
+                        <tr>
+                            <th class=" btn-dark">Ciudad</th>
+                            <th class=" btn-dark">Indicativo</th>
+                            <th class=" btn-dark">Numero</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for d in did%}
+                        <tr>
+                            <td>{{d.ciudad}}</td>
+                            <td>{{d.indicativo}}</td>
+                            <td>{{d.numero}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>    
+    </div>
+    </div>    
+</div>
+
+    <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1"></div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
+</div>
+<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+<h2>Crear Historico de la promoción</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default" for="id_nombre" >Nombre:</span>
+        <input required type="text" name="nombre" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_nombre">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default" for="id_fecha_inicial" >Fecha inicial:</span>
+        <input required type="date" name="fecha_inicial" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_fecha_inicial">
+    </div>
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default" for="id_fecha_final" >Fecha final:</span>
+        <input required type="date" name="fecha_final" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_fecha_final">
+    </div>  
+    <div class="mb-3">
+        <label for="id_descripcion" class="form-label">Detalles de la promoción:</label>
+        <textarea class="form-control" name="descripcion" id="id_descripcion" rows="3"></textarea>
+    </div>
+    <div class="mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-default" for="id_fecha_final" >banner:</span>
+        <input class="form-control" type="file" name="banner" id="id_banner" accept="image/*">
+    </div>
+  <button class="btn btn-secondary" type="submit">Guardar</button>
+</form>
+</div>
+
+{% endblock %}

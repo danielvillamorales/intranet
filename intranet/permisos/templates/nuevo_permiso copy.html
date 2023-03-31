@@ -1,0 +1,59 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+    <div class="col-xxl-8 col-xl-8 col-lg-8 col-md-9 col-sm-12 col-xs-12 col-12 container-fluid" id="contenido_directorio" >
+        <form method="POST">
+            {% csrf_token %}
+            <div id="formnewpermiso">
+                <p>Solicitado Por:</p>
+                <select class="form-select" name="get_usuariocrea">
+                    {%for u in usuarios %}
+                        <option value="{{u.id}}" >{{u.first_name.capitalize}} {{u.last_name.capitalize}}</option>
+                    {%endfor%}
+                </select>
+                <p>Motivo:</p>
+                <select class="form-select" name="get_motivo" onchange="habilitar(this.value)">
+                        <option value=""></option>
+                    {%for m in motivos %}
+                        <option value="{{m.id}}" >{{m.descripcion}}</option>
+                    {%endfor%}
+                </select>
+                <p id="pbeneficio" name="get_beneficio" display="none">Beneficio:</p>
+                <select class="form-select" id="selectbeneficio" display="none">
+                    <option value=""></option>
+                    {%for b in beneficios %}
+                        <option value="{{b.id}}">{{b.nombre}}</option>
+                    {%endfor%} 
+                </select>
+                <script>
+                    function habilitar(value)
+                    {
+                        if(value=="2")
+                        {
+                            // habilitamos
+                            document.getElementById("selectbeneficio").disabled=false;
+                            document.getElementById("selectbeneficio").style.display="inline";
+                            document.getElementById("pbeneficio").style.display="inline";
+                        }else {
+                            // deshabilitamos
+                            document.getElementById("selectbeneficio").disabled=true;
+                            document.getElementById("selectbeneficio").style.display="none"
+                            document.getElementById("pbeneficio").style.display="none"
+                        }
+                    }
+                </script>
+                <p>Fechas:</p>
+                <div class="input-group mb-3">
+                    <input type="datetime-local" class="form-control" name="get_fechainicial" placeholder="Fecha inicial" aria-label="Username">
+                    <span class="input-group-text">&</span>
+                    <input type="datetime-local" class="form-control" name="get_fechafinal" placeholder="Server" aria-label="Server">
+                </div>
+                <p>Descripcion:</p>
+                <input  class="form-control input-lg" id="inputlg" type="text" name="get_descripcion">
+                <button type="submit" class="btn btn-outline-dark">Grabar</button>
+            </div>            
+        </form>
+    </div>
+    <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-1" ></div>
+{% endblock %}

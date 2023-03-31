@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
+</div>
+<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    <div class="container-fluid" id="divbuttonpermisos">
+        <a href="{% url 'guardar_promocion'%}" class="btn btn-outline-primary" role="button" ><img src="{% static 'img/agregar.png'%}" id="permisosbtnagregar"> Crear Promoción</a>
+    </div>
+    <div class="table"  id="divtable">
+        <table class="table table-hover" id="tabla_directorio">
+            <thead>
+                <tr>
+                    <th class=" btn-dark">Nombre de convenio</th>
+                    <th class=" btn-dark">Fecha inicial</th>
+                    <th class=" btn-dark">Fecha final</th>
+                    <th class=" btn-dark">Imagen</th>
+                    <th class=" btn-dark">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in promociones %}
+                <tr id="tabla_convenios">
+                    <td>{{p.nombre}}</td>
+                    <td>{{p.fecha_inicial}}</td>
+                    <td>{{p.fecha_final}}</td>
+                    <td>
+                        <a onclick="mostrar_foto({{ p.id }})" href="#">ver foto</a>
+                        <img src="{{ p.banner.url }}" alt="imagen_banner" id="imgpromo_{{p.id}}" style="display: none; height:150px;">  
+                    <td>
+                        <a href="../ver_promocion/{{p.id}}" tittle="ver"><img  src="{% static 'img/ver.png' %}" tittle="Descargar" id="acciones_permisos"></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+</div>
+{% endblock %}

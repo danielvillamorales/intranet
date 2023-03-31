@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
+</div>
+<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    <div class="container-fluid" id="divbuttonpermisos">
+        <a href="{% url 'subir_archivo'%}" class="btn btn-outline-primary" role="button" ><img src="{% static 'img/agregar.png'%}" id="permisosbtnagregar"> Nuevo Convenio</a>
+    </div>
+    <div class="table"  id="divtable">
+        <table class="table table-hover" id="tabla_directorio">
+            <thead>
+                <tr>
+                    <th class=" btn-dark">Nombre de convenio</th>
+                    <th class=" btn-dark">Datos contacto</th>
+                    <th class=" btn-dark">Fecha inicial</th>
+                    <th class=" btn-dark">Fecha final</th>
+                    <th class=" btn-dark">Estado</th>
+                    <th class=" btn-dark">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in convenios %}
+                {% if c.activo == 1%}
+                <tr id="tabla_convenios" class="table-danger">
+                {% else %}
+                <tr id="tabla_convenios">
+                {% endif %}
+                    <td>{{c.nombre}}</td>
+                    <td>{{c.email}} - {{c.telefono}}
+                    </td>
+                    <td>{{c.fecha_inicial}}</td>
+                    <td>{{c.fecha_final}}</td>
+                    {% if c.activo == 0%}
+                    <td>Activo</td>
+                    {% else %}
+                    <td>Inactivo</td>
+                    {% endif %}
+                    <td>
+                        <a tittle="aprobar" onclick="confirmar('Desea Descargar el pdf?', '../descargar_pdf/{{c.id}}');"><img  src="{% static 'img/descargar.png' %}" tittle="Descargar" id="acciones_permisos"></a>
+                        <a tittle="rechazar" onclick="confirmar('Estas Seguro de desactivar convenio?', '../desactivar_convenio/{{c.id}}');"><img src="{% static 'img/rechazar.png' %}" tittle="rechazar" id="acciones_permisos"></a>     
+                        <a href="../editar_convenio/{{c.id}}" tittle="editar"><img src="{% static 'img/editar.png' %}" tittle="rechazar" id="acciones_permisos"></a>          
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+</div>
+{% endblock %}

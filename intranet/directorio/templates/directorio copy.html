@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container-flui">
+<div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-3 col-xs-4 col-4"></div>
+    <div class="col-lg-8 col-md-8 col-sm-9 col-xs-8 col-8" id="contenido_directorio" >
+<!--    <table  class="table table-hover">
+            <thead>
+                <tr>
+                    <th class=" btn-dark">Dependencia</th>
+                    <th class=" btn-dark">Cargo</th>
+                    <th class=" btn-dark">Empleado</th>
+                    <th class=" btn-dark">Extension</th>
+                    <th class=" btn-dark">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for d in directorio %}
+                    <tr data-toggle="collapse" data-target="#accordion" class="clickable">
+                        <td>{{d.sede}}</td>
+                        <td>{{d.cargo}}</td>
+                        <td>{{d.usuario}}</td>
+                        <td>{{d.extension}}</td>
+                        <td>{{d.email}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="6" class="hiddenRow">
+                            <div class="accordion-body collapse" id="demo1">Demo1</div>
+                        </td>
+                    </tr>
+                {% endfor %}    
+            </tbody>
+        </table>-->
+        <div class="container-fluid">       
+            <div class="data-container">
+                <span class="btndir"><a href="{% url 'directorio'%}" title="Directorio">Directorio</a></span>
+            </div>
+            <span id="ref_ka"><a  href="https://www.kostazul.com/" target="_blank">Kosta Azul</a></span>          
+        </div>
+        <form method='post'>{% csrf_token %}
+            <div class="input-group mb-3 container-fluid" id="busqueda_dir">
+                <input type="text" name="buscar" class="form-control" placeholder="Buscar datos..." id="buscardor-directorio" aria-label="Recipient's username" aria-describedby="button-addon2">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button> 
+            </div>
+        </form>
+        <div class="table container-fluid">
+        <table class="table table-sm table-hover container-fluid" style="border-collapse:collapse;" id="tabla_directorio">
+            <thead class="thead-dark">
+                <tr>
+                    <th class=" btn-dark">Dependencia</th>
+                    <th class=" btn-dark">Cargo</th>
+                    <th class=" btn-dark">Empleado</th>
+                    <th class=" btn-dark">Extension</th>
+                    <th class=" btn-dark">Email</th>
+                </tr>
+            </thead>
+            {% for d in directorio %}
+                <tbody>
+                <tr class="clickable" data-toggle="collapse" data-target="#group-of-rows-{{d.id}}">
+                    <td><i class="fa fa-plus" aria-hidden="true"></i></td>
+                    <td>{{d.sede}}</td>
+                    <td>{{d.cargo}}</td>
+                    <td>{{d.usuario}}</td>
+                    <td>{{d.extension}}</td>
+                    <td>{{d.email}}</td>
+                </tr>
+                </tbody>
+                <tbody id="group-of-rows-{{d.id}}" class="collapse">
+                    <tr>
+                        <td colspan="6">hollaaa </td>
+                    </tr>
+                </tbody>
+            {% endfor %}
+            
+        </table> 
+    </div>      
+    </div>
+    <div class="col-lg-2 col-md-2"></div>
+</div>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12 col-12 container-fluid" id="id_jstree" >
+    <input id="search-input" class="search-input" placeholder="Buscar Archivo...">
+    <br>
+    <div id="jstree">
+    </div>
+</div>
+<div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12 col-12 container-fluid" >
+    <div id="id_contenidojstree">
+        <iframe src="{% static 'img/sgc.jpg' %}" id="objeto"></iframe>
+    </div>    
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+    $(function() {        
+        var arrayCollection =  [
+        {%for dir , root ,arc_dir,es_archivo,root_anterior in lista%}
+            {"id":"{{dir}}", "parent":"{{root}}" , "text":"{{arc_dir}}","icon":"{%static 'img/carpetas.png'%}"},
+        {%endfor%}
+        {%for dir , root ,arc_dir,es_archivo,ruta in archivos%}
+            {"id":"{{dir}}", "parent":"{{root}}" , "text":"{{arc_dir}}","icon":"{%static 'img/pdf.png'%}","a_attr":{"href":"{% static 'sgc'%}{{ruta}}" ,"target":"_blank"}},
+        {%endfor%}
+        ];
+        createJSTree(arrayCollection);
+    });
+
+        function createJSTree(arrayCollection){
+            $("#jstree").jstree({
+                "core": {
+                    "animation" : 2,
+                    "check_callback" : true,
+                    "data": arrayCollection,
+                },
+            "plugins" : [
+                "search",
+                "html_data","ui"
+          ],
+          "search": {
+            "case_sensitive": false,
+            "show_only_matches": true
+            }
+        });
+    }
+    $(document).ready(function () {
+        $(".search-input").keyup(function () {
+            var searchString = $(this).val();
+            $('#jstree').jstree('search', searchString);
+        });
+    });
+
+    $('#jstree').on("changed.jstree", function (e,data){
+        console.log(data);
+    });
+
+    $(document).on('click','.jstree-anchor',function(e){
+		console.log($(this).prop('href'));
+		$('#objeto').attr('src',$(this).prop('href'));
+	});
+</script>
+{% endblock %}
