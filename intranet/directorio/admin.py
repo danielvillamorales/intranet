@@ -2,6 +2,7 @@ from django.contrib import admin
 from directorio.models import *
  
 admin.site.register(Convenios)
+admin.site.register(LineasCelularesContratadas)
 
 @admin.register(Did)
 class didAdmin(admin.ModelAdmin):

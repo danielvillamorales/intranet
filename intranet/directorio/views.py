@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render,redirect
-from directorio.models import Directorio,Did,Dir_almacenes
+from directorio.models import Directorio,Did,Dir_almacenes,LineasCelularesContratadas
 from django.db.models import Q
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .forms import *
 from .models import *
 
@@ -97,3 +97,9 @@ def ver_promocion(request, id):
     promocion =get_object_or_404(Promociones,pk=id)
     print(promocion)
     return render(request,'ver_promocion.html',{'promocion': promocion})
+
+@permission_required('directorio.ver_lineas_celulares_contratadas', raise_exception=True)
+@login_required
+def ver_lineas_celular(request):
+    celulares = LineasCelularesContratadas.objects.all()
+    return render(request,'lineas_telefonicas.html',{'celulares': celulares})

@@ -83,5 +83,20 @@ class Promociones(models.Model):
     class Meta:
         db_table = 'promociones'
     
+class LineasCelularesContratadas(models.Model):
+    linea = models.CharField(max_length=50)
+    estado = models.IntegerField(default=0, null=False,help_text='estado 0: activo , 1: inactivo')
+    pertenece = models.CharField(max_length=200)
+    quien_paga = models.CharField(max_length=200)
+    observaciones = models.TextField(max_length=10000, null=True, blank=True)
+    valor = models.FloatField(default=0)
+    operador = models.CharField(max_length=200, default='Claro')
+    
+    def __str__(self):
+        return f'Linea de: {self.pertenece} - numero: {self.linea}'
+    
+    class Meta:
+        db_table = 'lineas_celulares_contratadas'
+        permissions = [('ver_lineas_celulares_contratadas', 'Ver lineas celulares contratadas')]
     
 # Create your models here.
