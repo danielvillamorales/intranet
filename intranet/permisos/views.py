@@ -132,6 +132,7 @@ def aprobar_permisos(request,id):
 @login_required
 def rechazar_permisos(request,id):
     user = get_object_or_404(User, username = request.user)
+    print(user.has_perm('permisos.aprobar_permisos'))
     if user.has_perm('permisos.aprobar_permisos'):
         permiso = get_object_or_404(Permisos, pk=id)
         if permiso:
@@ -154,7 +155,7 @@ def rechazar_permisos(request,id):
 def entrada_permisos(request, id ):
     permiso = get_object_or_404(Permisos, pk=id)
     user = get_object_or_404(User, username = request.user)
-    if user.has_perm('permisos.salidad_y_entrada'):
+    if user.has_perm('permisos.salida_y_entrada'):
         if permiso:
             if permiso.reingreso is None:
                 permiso.reingreso=datetime.datetime.now()
@@ -172,7 +173,7 @@ def entrada_permisos(request, id ):
 def salida_permisos(request,id):
     permiso = get_object_or_404(Permisos, pk=id)
     user = get_object_or_404(User, username = request.user)
-    if user.has_perm('permisos.salidad_y_entrada'):
+    if user.has_perm('permisos.salida_y_entrada'):
         if permiso:
             if  permiso.salida is None:
                 tz = pytz.timezone('America/Bogota')
