@@ -90,6 +90,13 @@ def guardar_promocion(request):
 
 
 def ver_promociones(request):
+    if request.method == 'POST':
+        id = request.POST.get('idform')
+        valor = request.POST.get('valor')
+        promocion = get_object_or_404(Promociones, pk=id)
+        promocion.valor = valor
+        print(str(promocion.valor)+ '#######################################################################################################################')
+        promocion.save()
     promociones = Promociones.objects.order_by('-fecha_inicial')
     return render(request,'ver_promociones.html',{'promociones': promociones})
 

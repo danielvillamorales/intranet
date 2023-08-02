@@ -75,6 +75,7 @@ class Promociones(models.Model):
     fecha_final = models.DateField()
     descripcion = models.TextField(max_length=10000)
     banner = models.ImageField(upload_to='imagenes/')
+    valor = models.FloatField(default=0)
     
     
     def __str__(self):
