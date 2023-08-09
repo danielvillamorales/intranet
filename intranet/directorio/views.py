@@ -95,9 +95,22 @@ def ver_promociones(request):
         valor = request.POST.get('valor')
         promocion = get_object_or_404(Promociones, pk=id)
         promocion.valor = valor
-        print(str(promocion.valor)+ '#######################################################################################################################')
+        #print(str(promocion.valor)+ '#######################################################################################################################')
         promocion.save()
     promociones = Promociones.objects.order_by('-fecha_inicial')
+    ano = 0
+    contador = 0
+    for promocion in promociones:
+        print(promocion.fecha_inicial.year)
+        
+        if ano == promocion.fecha_inicial.year:
+            #ano = promocion.fecha_inicial.year    
+            contador = contador+1
+        else:
+            contador = 1
+        ano = promocion.fecha_inicial.year
+        promocion.contador = contador
+
     return render(request,'ver_promociones.html',{'promociones': promociones})
 
 def ver_promocion(request, id):

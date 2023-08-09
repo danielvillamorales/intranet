@@ -12,7 +12,8 @@
         <table class="table table-hover" id="tabla_directorio">
             <thead>
                 <tr>
-                    <th class=" btn-dark">Nombre de convenio</th>
+                    <th class= " btn-dark">#</th>
+                    <th class=" btn-dark">Nombre de promocion</th>
                     <th class=" btn-dark">Fecha inicial</th>
                     <th class=" btn-dark">Fecha final</th>
                     <th class=" btn-dark">Valor</th>
@@ -23,6 +24,7 @@
             <tbody>
                 {% for p in promociones %}
                 <tr id="tabla_convenios">
+                    <td>{{p.contador}}</td>
                     <td>{{p.nombre}}</td>
                     <td>{{p.fecha_inicial}}</td>
                     <td>{{p.fecha_final}}</td>
