@@ -5,8 +5,10 @@
 <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
 </div>
 <div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    
     <div class="container-fluid" id="divbuttonpermisos">
         <a href="{% url 'guardar_promocion'%}" class="btn btn-outline-primary" role="button" ><img src="{% static 'img/agregar.png'%}" id="permisosbtnagregar"> Crear Promoción</a>
+        <a class="btn btn-outline-success" href="{% url 'exportar_promociones' %}">Exportar Promociones</a>
     </div>
     <div class="table"  id="divtable">
         <table class="table table-hover" id="tabla_directorio">

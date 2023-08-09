@@ -16,7 +16,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from directorio.views import directorio, subir_archivo, descargar_pdf, archivo_detalle, desactivar_convenio, guardar_promocion, ver_promociones, ver_promocion, editar_convenio,ver_lineas_celular
+from directorio.views import directorio, subir_archivo, descargar_pdf, archivo_detalle, desactivar_convenio, guardar_promocion, ver_promociones, ver_promocion,exportar_promociones, editar_convenio,ver_lineas_celular
 from permisos.views import sgc,permisos,agregar_permisos,aprobar_permisos,rechazar_permisos,salida_permisos,entrada_permisos,contenidojson,calidad
 from django.contrib.auth.views import LoginView,LogoutView
 from django.conf.urls.static import static
@@ -45,6 +45,7 @@ urlpatterns = [
     path('guardar_promocion/', guardar_promocion , name='guardar_promocion'),
     path('ver_promociones/', ver_promociones, name='ver_promociones'),
     path('ver_promocion/<int:id>', ver_promocion, name='ver_promocion'),
+    path('exportar_promociones/', exportar_promociones , name='exportar_promociones'),
     path('editar_convenio/<int:id>', editar_convenio , name='editar_convenio'),
     path('contenidojson/',contenidojson,name='contenidojson'),
     path('ver_lineas_celular/',ver_lineas_celular,name='ver_lineas_celular')

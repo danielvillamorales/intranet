@@ -7,7 +7,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from .forms import *
 from .models import *
-
+from io import BytesIO
+from datetime import datetime, date
+import xlwt
 
 
 # Create your views here.
@@ -113,6 +115,31 @@ def ver_promocion(request, id):
     promocion =get_object_or_404(Promociones,pk=id)
     print(promocion)
     return render(request,'ver_promocion.html',{'promocion': promocion})
+
+def exportar_promociones(request):
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Promociones')
+    columns = [ 'Promocion','detalle', 'Fecha Inicial', 'Fecha Final', 'banner', 'valor']
+    row_num = 0
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num])
+    rows = Promociones.objects.all().values_list('nombre','descripcion','fecha_inicial','fecha_final','banner','valor')
+    for row in rows:
+        row_num += 1
+        for col_num in range(len(row)):
+            if isinstance(row[col_num], date):
+                fecha = row[col_num].strftime('%Y-%m-%d')
+                ws.write(row_num, col_num, fecha)
+            else:
+                ws.write(row_num, col_num, row[col_num] if col_num != 4 else f'https://intranet.kostazul.com/media/{row[col_num]}')
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=promociones.xls'
+    output = BytesIO()
+    wb.save(output)
+    output.seek(0)
+    response.write(output.getvalue())
+    return response
+
 
 @permission_required('directorio.ver_lineas_celulares_contratadas', raise_exception=True)
 @login_required
