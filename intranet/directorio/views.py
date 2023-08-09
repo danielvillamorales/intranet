@@ -103,11 +103,7 @@ def ver_promociones(request):
     for promocion in promociones:
         print(promocion.fecha_inicial.year)
         
-        if ano == promocion.fecha_inicial.year:
-            #ano = promocion.fecha_inicial.year    
-            contador = contador+1
-        else:
-            contador = 1
+        contador = contador+1 if ano == promocion.fecha_inicial.year else 1
         ano = promocion.fecha_inicial.year
         promocion.contador = contador
 
