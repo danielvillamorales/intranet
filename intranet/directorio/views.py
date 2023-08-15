@@ -102,12 +102,10 @@ def ver_promociones(request):
     promociones = Promociones.objects.order_by('-fecha_inicial')
     ano = 0
     contador = 0
-    for promocion in promociones:
-        print(promocion.fecha_inicial.year)
-        
+    for  promocion in promociones:   
         contador = contador+1 if ano == promocion.fecha_inicial.year else 1
-        ano = promocion.fecha_inicial.year
         promocion.contador = contador
+        ano = promocion.fecha_inicial.year
 
     return render(request,'ver_promociones.html',{'promociones': promociones})
 
@@ -119,19 +117,19 @@ def ver_promocion(request, id):
 def exportar_promociones(request):
     wb = xlwt.Workbook(encoding='utf-8')
     ws = wb.add_sheet('Promociones')
+    font_style = xlwt.XFStyle()
     columns = [ 'Promocion','detalle', 'Fecha Inicial', 'Fecha Final', 'banner', 'valor']
     row_num = 0
-    for col_num in range(len(columns)):
-        ws.write(row_num, col_num, columns[col_num])
+    #for col_num in range(len(columns)):
+    #    ws.write(row_num, col_num, columns[col_num], font_style)
+    [ws.write(row_num, col_num, column, font_style) for col_num, column in enumerate(columns)]
     rows = Promociones.objects.all().values_list('nombre','descripcion','fecha_inicial','fecha_final','banner','valor')
-    for row in rows:
-        row_num += 1
-        for col_num in range(len(row)):
-            if isinstance(row[col_num], date):
-                fecha = row[col_num].strftime('%Y-%m-%d')
-                ws.write(row_num, col_num, fecha)
+    for row_num, row in enumerate(rows, start=1):
+        for col_num, cell in enumerate(row):
+            if isinstance(cell, date):
+                ws.write(row_num, col_num, cell.strftime('%Y-%m-%d'), font_style)
             else:
-                ws.write(row_num, col_num, row[col_num] if col_num != 4 else f'https://intranet.kostazul.com/media/{row[col_num]}')
+                ws.write(row_num, col_num, cell if col_num != 4 else f'https://intranet.kostazul.com/media/{cell}', font_style)
     response = HttpResponse(content_type='application/ms-excel')
     response['Content-Disposition'] = 'attachment; filename=promociones.xls'
     output = BytesIO()
