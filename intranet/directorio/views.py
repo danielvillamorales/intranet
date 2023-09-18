@@ -10,6 +10,7 @@ from .models import *
 from io import BytesIO
 from datetime import datetime, date
 import xlwt
+from django.contrib import messages
 
 
 # Create your views here.
@@ -93,12 +94,16 @@ def guardar_promocion(request):
 
 def ver_promociones(request):
     if request.method == 'POST':
-        id = request.POST.get('idform')
-        valor = request.POST.get('valor')
-        promocion = get_object_or_404(Promociones, pk=id)
-        promocion.valor = valor
-        #print(str(promocion.valor)+ '#######################################################################################################################')
-        promocion.save()
+        user = get_object_or_404(User, username = request.user)
+        if user.has_perm('directorio.puede_editar_promociones'):
+            id = request.POST.get('idform')
+            valor = request.POST.get('valor')
+            promocion = get_object_or_404(Promociones, pk=id)
+            promocion.valor = int(valor.replace('.','').replace(',0',''))
+            #print(str(promocion.valor)+ '#######################################################################################################################')
+            promocion.save()
+        else:
+            messages.warning(request ,"No tiene permisos para editar promociones o guardar el valor de la promocion")
     promociones = Promociones.objects.order_by('-fecha_inicial')
     ano = 0
     contador = 0

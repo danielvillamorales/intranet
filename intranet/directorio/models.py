@@ -83,6 +83,7 @@ class Promociones(models.Model):
     
     class Meta:
         db_table = 'promociones'
+        permissions = [('puede_editar_promociones', 'Puede editar promociones')]
     
 class LineasCelularesContratadas(models.Model):
     linea = models.CharField(max_length=50)

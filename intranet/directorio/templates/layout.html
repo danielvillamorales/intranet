@@ -46,7 +46,19 @@
                             </nav>
                         </div>
                     </div>
+
                     <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-12 col-sm-12 col-xs-12 col-12" ></div>
+                    <div class="col-12">
+                        {% if messages %}
+                        {% for message in messages %}
+                        <ul >
+                            <li {% if message.tags %} 
+                            class="alert alert-{%if message.tags == 'error' %}danger{% else %}{{ message.tags }} {%endif%}  alert-dismissible fade show"{% endif %} role="alert">{{ message }} </li>
+                        </ul>
+                        {% endfor %}
+                    
+                    {% endif %}
+                    </div>
                 {% block content%}
                 {% endblock %}
             </div>
