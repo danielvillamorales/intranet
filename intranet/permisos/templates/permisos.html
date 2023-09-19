@@ -2,18 +2,19 @@
 {% extends "layout.html" %}
 {% block content %}
 {% load static %}
+<div class="col-12">
+    {% if messages %}
+        {% for message in messages %}
+        <ul >
+            <li {% if message.tags %} 
+            class="alert alert-{%if message.tags == 'error' %}danger{% else %}{{ message.tags }} {%endif%}  alert-dismissible fade show"{% endif %} role="alert">{{ message }} </li>
+        </ul>
+        {% endfor %}
+    {% endif %}
+    </div>
 <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
 </div>
     <div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12 container-fluid" id="contenido_directorio" >
-        {% if messages %}
-            {% for message in messages %}
-            <ul >
-                <li {% if message.tags %} 
-                class="alert alert-{%if message.tags == 'error' %}danger{% else %}{{ message.tags }} {%endif%}  alert-dismissible fade show"{% endif %} role="alert">{{ message }} </li>
-            </ul>
-            {% endfor %}
-        
-        {% endif %}
         <div class="container-fluid" >       
             <div class="data-container">
                 <a href="{% url 'permisos'%}" title="Directorio"><span class="btndir">Permisos</span></a>
