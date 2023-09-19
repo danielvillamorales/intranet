@@ -25,7 +25,7 @@ def permisos(request):
         usuarios = User.objects.filter(is_active=True).order_by('first_name')
     else:
         lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).order_by('-fechaInicial')
-        usuarios = [user,]        
+        usuarios = User.objects.filter(Q(is_active=True, id = user.id) | Q(is_active = True, id__in = encargados )).order_by('first_name')   
     motivos = Tipodepermiso.objects.all()
     if request.method == 'POST':
         id_solicitado_por = request.POST.get('solicitado_por', False)
