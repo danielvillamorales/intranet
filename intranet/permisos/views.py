@@ -34,7 +34,7 @@ def permisos(request):
         if id_solicitado_por:
             solicitado_por = User.objects.get(pk=int(id_solicitado_por))
             print(solicitado_por)
-            lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=solicitado_por) | Q(usuariodepermiso__in = encargados) ).order_by('-fechaInicial')
+            lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=solicitado_por)).order_by('-fechaInicial')
         if user.has_perm('permisos.ver_permisos_de_todos'):
             if id_estado:
                 lista_permisos = Permisos.objects.filter(estado=id_estado).order_by('-fechaInicial')
