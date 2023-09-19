@@ -3,15 +3,6 @@
 {% block content %}
 {% load static %}
     <div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12 col-12 container-fluid" id="contenido_directorio" >
-        {% if messages %}
-            {% for message in messages %}
-            <ul >
-                <li {% if message.tags %} 
-                class="alert alert-{%if message.tags == 'error' %}danger{% else %}{{ message.tags }} {%endif%}  alert-dismissible fade show"{% endif %} role="alert">{{ message }} </li>
-            </ul>
-            {% endfor %}
-        
-        {% endif %}
         <form method="POST" id="formnewpermiso">
             {% csrf_token %}
             <div>

@@ -113,10 +113,15 @@
                                         <img src="{% static 'img/rechazado.png' %}" tittle="Rechazado" id="estado_permisos">
                                     {% endif %}
                                 </td>
-                                <td><a tittle="aprobar" onclick="confirmar('Estas Seguro De Aprobar EL Permiso De {{p.usuariodepermiso.first_name.capitalize}} {{p.usuariodepermiso.last_name.capitalize}}?', '../aprobar_permisos/{{p.id}}');"><img  src="{% static 'img/aprobar.png' %}" tittle="aprobar" id="acciones_permisos"></a>
-                                    <a tittle="rechazar" onclick="confirmar('Estas Seguro De Rechazar el permiso De {{p.usuariodepermiso.first_name.capitalize}} {{p.usuariodepermiso.last_name.capitalize}}?', '../rechazar_permisos/{{p.id}}');"><img src="{% static 'img/rechazar.png' %}" tittle="rechazar" id="acciones_permisos"></a>
-                                    <a href="../entrada/{{p.id}}" tittle="rechazar"><img src="{% static 'img/entrada.png' %}" tittle="entrada" id="acciones_permisos"></a>
-                                    <a href="../salida/{{p.id}}" tittle="rechazar"><img src="{% static 'img/salida.png' %}" tittle="salida" id="acciones_permisos"></a>
+                                <td>
+                                    {%if p.estado == 0 %}
+                                    <a title="aprobar" onclick="confirmar('Estas Seguro De Aprobar EL Permiso De {{p.usuariodepermiso.first_name.capitalize}} {{p.usuariodepermiso.last_name.capitalize}}?', '../aprobar_permisos/{{p.id}}');"><img  src="{% static 'img/aprobar.png' %}" tittle="aprobar" id="acciones_permisos"></a>
+                                    <a title="rechazar" onclick="confirmar('Estas Seguro De Rechazar el permiso De {{p.usuariodepermiso.first_name.capitalize}} {{p.usuariodepermiso.last_name.capitalize}}?', '../rechazar_permisos/{{p.id}}');"><img src="{% static 'img/rechazar.png' %}" tittle="rechazar" id="acciones_permisos"></a>
+                                    {% endif %}
+                                    {% if p.estado == 1%}
+                                    <a href="../salida/{{p.id}}"  title="salida empleado"><img src="{% static 'img/salida.png' %}" tittle="salida" alt="salida empleado" id="acciones_permisos"></a>
+                                    <a href="../entrada/{{p.id}}" title="entrada empleado"><img src="{% static 'img/entrada.png' %}" tittle="entrada" alt="entrada empleado" id="acciones_permisos"></a>
+                                    {% endif %}
                                 </td>
                             </tr>
                             <tr>

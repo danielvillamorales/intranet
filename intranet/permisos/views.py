@@ -12,17 +12,19 @@ import datetime
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from os import walk, getcwd, path
+from permisos.models import UsuarioEncargado
 import json
 import pytz
 # Create your views here.
 @login_required
 def permisos(request):
     user = get_object_or_404(User, username = request.user)
+    encargados = UsuarioEncargado.objects.filter(encargado=user).values('usuario')
     if user.has_perm('permisos.ver_permisos_de_todos'):
         lista_permisos = Permisos.objects.all().order_by('-fechaInicial')
         usuarios = User.objects.filter(is_active=True).order_by('first_name')
     else:
-        lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id)).order_by('-fechaInicial')
+        lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).order_by('-fechaInicial')
         usuarios = [user,]        
     motivos = Tipodepermiso.objects.all()
     if request.method == 'POST':
@@ -32,7 +34,7 @@ def permisos(request):
         if id_solicitado_por:
             solicitado_por = User.objects.get(pk=int(id_solicitado_por))
             print(solicitado_por)
-            lista_permisos = Permisos.objects.filter(usuariodepermiso=solicitado_por).order_by('-fechaInicial')
+            lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=solicitado_por) | Q(usuariodepermiso__in = encargados) ).order_by('-fechaInicial')
         if user.has_perm('permisos.ver_permisos_de_todos'):
             if id_estado:
                 lista_permisos = Permisos.objects.filter(estado=id_estado).order_by('-fechaInicial')
@@ -42,11 +44,11 @@ def permisos(request):
                 lista_permisos = Permisos.objects.filter(tipopermiso=motivo).order_by('-fechaInicial')
         else:
             if id_estado:
-                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id)).filter(estado=id_estado).order_by('-fechaInicial')
+                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(estado=id_estado).order_by('-fechaInicial')
             
             if id_motivo:
                 motivo = Tipodepermiso.objects.get(pk=int(id_motivo))
-                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id)).filter(tipopermiso=motivo).order_by('-fechaInicial')
+                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(tipopermiso=motivo).order_by('-fechaInicial')
         if id_estado or id_motivo or id_solicitado_por:
              return render(request,'permisos.html',{'lista_permisos':lista_permisos,'usuarios':usuarios,'motivos':motivos})
     page = request.GET.get('page', 1)
@@ -82,6 +84,9 @@ def agregar_permisos(request):
                 fecha_inicial = datetime.datetime.strptime(request.POST.get('get_fechainicial'),format)
                 fecha_final = datetime.datetime.strptime(request.POST.get('get_fechafinal'),format)
                 evaluar = formulario.save(commit=False)
+                if len(UsuarioEncargado.objects.filter(usuario=evaluar.usuariodepermiso)) == 0:
+                    messages.error(request,'El usuario no tiene un encargado asignado')
+                    return redirect('nuevo_permiso')
                 if evaluar.tipopermiso.id  == 2 and evaluar.beneficio.id != 9:
                     buscarbeneficio = Permisos.objects.filter(usuariodepermiso = evaluar.usuariodepermiso.id).filter(beneficio = evaluar.beneficio.id).filter(fechaInicial__year = str(fecha_inicial.year)).count()
                     if buscarbeneficio > 0:
@@ -109,8 +114,24 @@ def agregar_permisos(request):
 @login_required
 def aprobar_permisos(request,id):
     user = get_object_or_404(User, username = request.user)
+    permiso = get_object_or_404(Permisos, pk=id)
+    encargado = UsuarioEncargado.objects.filter(encargado=user, usuario=permiso.usuariodepermiso)
     if user.has_perm('permisos.aprobar_permisos'):
-        permiso = get_object_or_404(Permisos, pk=id)
+        if permiso:
+            if permiso.estado == 1:
+                messages.warning(request,'El permiso ya se encuentra aprobado')
+            elif permiso.estado == 2 :
+                messages.warning(request,'El permiso ya se encuentra rechazado')
+            else:
+                permiso.estado = 1
+                permiso.usuarioaprobacion = user
+                permiso.fechaaprobacion = datetime.datetime.now()
+                permiso.save()
+                messages.success(request,'Se aprobó el permiso')
+        else:
+            messages.error(request,'no se pudo realizar la operacion')
+        return redirect('permisos')
+    elif (len(encargado) > 0):
         if permiso:
             if permiso.estado == 1:
                 messages.warning(request,'El permiso ya se encuentra aprobado')
@@ -126,15 +147,15 @@ def aprobar_permisos(request,id):
             messages.error(request,'no se pudo realizar la operacion')
         return redirect('permisos')
     else:
-        messages.error(request,'No tiene permisos suficientes para aprobar')
+        messages.error(request,'No tiene permisos suficientes para aprobar los permisos de este empleado')
         return redirect('permisos')
 
 @login_required
 def rechazar_permisos(request,id):
     user = get_object_or_404(User, username = request.user)
-    print(user.has_perm('permisos.aprobar_permisos'))
+    permiso = get_object_or_404(Permisos, pk=id)
+    encargado = UsuarioEncargado.objects.filter(encargado=user, usuario=permiso.usuariodepermiso)
     if user.has_perm('permisos.aprobar_permisos'):
-        permiso = get_object_or_404(Permisos, pk=id)
         if permiso:
             if permiso.estado == 1:
                 messages.error(request,'No se puede rechazar dado que su estado es aprobado')
@@ -147,6 +168,20 @@ def rechazar_permisos(request,id):
         else:
             messages.error(request,'No se pudo realizar operacion')
         return redirect('permisos')
+    elif (len(encargado) > 0):
+        if permiso:
+            if permiso.estado == 1:
+                messages.error(request,'No se puede rechazar dado que su estado es aprobado')
+            else:
+                permiso.estado = 2
+                permiso.usuarioaprobacion = user
+                permiso.fechaaprobacion = datetime.datetime.now()
+                permiso.save()
+                messages.warning(request,'Se rechazo el permiso')
+        else:
+            messages.error(request,'No se pudo realizar operacion')
+        return redirect('permisos')
+
     else:
         messages.error(request,'No tiene permisos suficientes para aprobar')
         return redirect('permisos')

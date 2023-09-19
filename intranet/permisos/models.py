@@ -26,6 +26,13 @@ class Beneficios(models.Model):
     def get_condiciones(self):
         return self.condiciones
     
+class UsuarioEncargado(models.Model):
+    usuario = models.ForeignKey(User,on_delete=models.PROTECT,related_name='usuario',db_column='usuario')
+    encargado = models.ForeignKey(User,on_delete=models.PROTECT,related_name='encargado',db_column='encargado')
+
+    def __str__(self):
+        return f'{self.usuario.first_name} {self.usuario.last_name} - {self.encargado.first_name} {self.encargado.last_name}'
+    
 class Permisos(models.Model):
     usuariodecreacion = models.ForeignKey(User,on_delete=models.PROTECT,related_name='emails',db_column='emails',null=True,blank=True)
     usuariodepermiso = models.ForeignKey(User,on_delete=models.PROTECT,related_name='usernames',db_column='usernames')
