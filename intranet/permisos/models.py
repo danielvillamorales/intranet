@@ -48,6 +48,9 @@ class Permisos(models.Model):
     estado = models.IntegerField(default=0, null=False,help_text='estado 0:solicitado , 1:aprobado , 2: rechazado')
     fechacreacion = models.DateTimeField(null=True,blank=False)
     
+    def full_name_usuariopermiso(self):
+        return f'{self.usuariodepermiso.first_name.capitalize()} {self.usuariodepermiso.last_name.capitalize()}'
+
     class Meta:
         permissions = [
         ('ver_permisos_de_todos','ver_permisos_de_todos'),('aprobar_permisos','aprobar_permisos'),

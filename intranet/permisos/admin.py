@@ -9,7 +9,6 @@ admin.site.register(UsuarioEncargado)
 
 @admin.register(Permisos)
 class PermisosAdmin(admin.ModelAdmin):
-    list_display = ('usuariodepermiso', 'tipopermiso','fechaInicial','fechaFinal')
-    search_fields = ('usuariodepermiso', 'tipopermiso','fechaInicial','fechaFinal')
-    list_filter = ('usuariodepermiso', 'tipopermiso','fechaInicial','fechaFinal')
-    ordering = ('id',)
+    list_display = ('usuariodepermiso','full_name_usuariopermiso', 'tipopermiso','fechaInicial','fechaFinal')
+    search_fields = ('usuariodepermiso__username','usuariodepermiso__first_name','usuariodepermiso__last_name')
+    ordering = ('-id',)
