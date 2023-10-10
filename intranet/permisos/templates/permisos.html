@@ -166,6 +166,13 @@
                                                         <div>{{p.fechaaprobacion}}</div>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td class="text-center" colspan="2">
+                                                        <a class="btn btn-outline-danger btn-sm" 
+                                                        onclick="confirmar('Estas Seguro De ELiminar EL Permiso De {{p.usuariodepermiso.first_name.capitalize}} {{p.usuariodepermiso.last_name.capitalize}}?', '../eliminar_permiso/{{p.id}}');"
+                                                        >Eliminar Permiso (Solo para el encargado)</a>
+                                                    </td>
+                                                </tr>
                                             </table>
                                         </div>
                                     </div>

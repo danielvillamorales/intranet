@@ -185,6 +185,22 @@ def rechazar_permisos(request,id):
     else:
         messages.error(request,'No tiene permisos suficientes para aprobar')
         return redirect('permisos')
+    
+
+def eliminar_permiso(request, id):
+    user = get_object_or_404(User, username = request.user)
+    permiso = get_object_or_404(Permisos, pk=id)
+    encargado =  UsuarioEncargado.objects.filter(encargado=user, usuario=permiso.usuariodepermiso)
+    if (len(encargado) > 0):
+        if permiso:
+            permiso.delete()
+            messages.success(request,'Se elimino el permiso')
+        else:
+            messages.error(request,'No se pudo realizar operacion no existe el permiso')
+    else:
+        messages.error(request,'No se pudo realizar operacion no eres el encardo de este empleado')
+    return redirect('permisos')
+
 
 @login_required
 def entrada_permisos(request, id ):
