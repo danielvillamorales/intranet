@@ -12,76 +12,74 @@
         {% endfor %}
     {% endif %}
     </div>
-<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
-</div>
-    <div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12 container-fluid" id="contenido_directorio" >
+    <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
         <div class="container-fluid" >       
             <div class="data-container">
                 <a href="{% url 'permisos'%}" title="Directorio"><span class="btndir">Permisos</span></a>
             </div>         
         </div>
-        <div class="container-fluid" id="idnavtablist">
+        <div class="container-fluid mt-1">
                 <nav>
                     <div class="nav nav-tabs" id="nav-tab" role="tablist">
                       <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Empleado</button>
                       <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Motivo</button>
                       <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Estado</button>
-                    </div>
                 </nav>
+                
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                         <form method='post'>{% csrf_token %}
-                            <div class="input-group container-fluid" id="divbuscaruser">
+                            <div class="input-group input-group-sm mb-3" id="divbuscaruser">
                                 <select  required class="form-select form-select-sm" id="inputGroupUsuario" name="solicitado_por" placeholder="buscar por usuario "aria-label=".form-select-sm Example select with button addon" >
                                         <option value=""></option>
                                     {%for u in usuarios %}
                                         <option value="{{u.id}}" >{{u.first_name.capitalize}} {{u.last_name.capitalize}}</option>
                                     {%endfor%}
                                 </select>
-                                <button class="btn btn-outline-dark btn-sm" type="submit" id="btnGrpUsuario">Buscar</button>           
+                                <button class="btn btn-outline-secondary btn-sm" type="submit" id="btnGrpUsuario">Buscar</button>           
                             </div>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                         <form method='post'>{% csrf_token %}    
-                            <div class="input-group container-fluid" id="divbuscaruser">
+                            <div class="input-group input-group-sm mb-3" id="divbuscaruser">
                                 <select  required class="form-select form-select-sm" id="inputGroupUsuario"  name="motivo" placeholder="buscar por usuario "aria-label=".form-select-sm Example select with button addon" >
                                         <option value=""></option>
                                     {%for m in motivos %}
                                         <option value="{{m.id}}" >{{m.descripcion}}</option>
                                     {%endfor%}
                                 </select>
-                                <button class="btn btn-outline-dark btn-sm" type="submit" id="btnGrpUsuario">Buscar</button>           
+                                <button class="btn btn-outline-secondary btn-sm" type="submit" id="btnGrpUsuario">Buscar</button>           
                             </div>
                         </form>
                     </div>
                     <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
                         <form method='post'>{% csrf_token %}
-                            <div class="input-group container-fluid" id="divbuscaruser">
+                            <div class="input-group input-group-sm mb-3" id="divbuscaruser">
                                 <select  required class="form-select form-select-sm" id="inputGroupUsuario"  name="estado" placeholder="buscar por usuario "aria-label=".form-select-sm Example select with button addon" >
                                         <option value=""></option>
                                         <option value="0" >Pendiente</option>
                                         <option value="1" >Aprobado</option>
                                         <option value="2" >Rechazado</option>
                                 </select>
-                                <button class="btn btn-outline-dark btn-sm" type="submit" id="btnGrpUsuario">Buscar</button>           
+                                <button class="btn btn-outline-secondary btn-sm" type="submit" id="btnGrpUsuario">Buscar</button>           
                             </div>
                         </form>
                     </div>                
                 </div>
             </form> 
         </div>
-        <div class="container-fluid" id="divbuttonpermisos">
-            <a href="{% url 'nuevo_permiso'%}" class="btn btn-outline-primary" role="button" ><img src="{% static 'img/agregar.png'%}" id="permisosbtnagregar"> Nuevo</a>
-        </div>
-        <div id="divtablapermisos" class="container-fluid table-wrapper-scroll-y my-custom-scrollbar">
+        <a href="{% url 'nuevo_permiso'%}" class="material-symbols-outlined btn btn-sm btn-primary aling-center ms-3" role="button" title="Nuevo Permiso">
+            add_circle
+        </a>
+        <div id="divtablapermisos" class="table-wrapper-scroll-y my-custom-scrollbar mt-1 p-">
             <table class="table table-light table-striped table-sm" id="tablapermisos">
-                <thead class="table-dark table-hover">
+                <thead class="table-primary table-hover">
                     <tr>
                         <th>Solicitado Por...</th>
                         <th>Tipo De Solicitud</th>
-                        <th>Fecha Inicial Solicitud</th>
-                        <th>Fecha Final Solicitud</th>
+                        <th>Fecha Inicial</th>
+                        <th>Fecha Final</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -90,7 +88,7 @@
                     <div class="accordion-item">
                         {% for p in lista_permisos%}
                             {% if p.estado == 0 %}
-                                <tr class="accordion-header table-danger" class="accordion-button" id="heading{{p.id}}" data-bs-toggle="collapse" data-bs-target="#collapse{{p.id}}" aria-expanded="true" aria-controls="collapse{{p.id}}">
+                                <tr class="accordion-header table-warning" class="accordion-button" id="heading{{p.id}}" data-bs-toggle="collapse" data-bs-target="#collapse{{p.id}}" aria-expanded="true" aria-controls="collapse{{p.id}}">
                             {% else %}
                             <tr class="accordion-header" id="heading{{p.id}}" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapse{{p.id}}" aria-expanded="true" aria-controls="collapse{{p.id}}">
                             {% endif %}    
@@ -107,11 +105,11 @@
                                 <td>{{p.fechaFinal}}</td>
                                 <td>
                                     {%if p.estado == 0 %}
-                                        <img src="{% static 'img/pendiente.png' %}" id="estado_permisos">
+                                        <img src="{% static 'img/pendiente.png' %}" title="pendiente" id="estado_permisos">
                                     {% elif p.estado == 1 %}
-                                        <img src="{% static 'img/aprobado.png' %}" tittle="Aprobado" id="estado_permisos">
+                                        <img src="{% static 'img/aprobado.png' %}" title="Aprobado" id="estado_permisos">
                                     {% else %}
-                                        <img src="{% static 'img/rechazado.png' %}" tittle="Rechazado" id="estado_permisos">
+                                        <img src="{% static 'img/rechazado.png' %}" title="Rechazado" id="estado_permisos">
                                     {% endif %}
                                 </td>
                                 <td>
@@ -184,7 +182,7 @@
             </table>
         </div> 
         {% if lista_permisos.has_other_pages %}
-        <nav aria-label="...">
+        <nav aria-label="..." class="container-fluid mt-1 ms-2">
             <ul class="pagination">
                 {% if lista_permisos.has_previous %}
                     <li class="page-item">
@@ -208,5 +206,4 @@
         </nav>
         {% endif %}
     </div>
-    <div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1" ></div>
     {% endblock %}

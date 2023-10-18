@@ -1,10 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
 {% load static %}
-<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
-</div>
-<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
-<h2>Edicion de convenio</h2>
+
+<div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+<div class="container-fluid">
+<h2 class="text-secondary">Edicion de convenio</h2>
+<hr>
 <form method="post" enctype="multipart/form-data">
   {% csrf_token %}
     <div class="input-group mb-3">
@@ -33,6 +34,7 @@
     <button class="btn btn-secondary" type="submit">Guardar</button>
     </div>
 </form>
+</div>
 </div>
 
 {% endblock %}

@@ -2,42 +2,46 @@
 {% extends "layout.html" %}
 {% load static %}
 {% block content %}
-<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
-</div>
-<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
-    <div class="table"  id="divtable">
-        <table class="table table-hover" id="tabla_directorio">
-            <thead>
-                <tr>
-                    <th class=" btn-dark">Operador</th>
-                    <th class=" btn-dark">Dueño De la linea</th>
-                    <th class=" btn-dark">Quien la paga</th>
-                    <th class=" btn-dark">Valor</th>
-                    <th class=" btn-dark">Numero De Celular</th>
-                    <th class=" btn-dark">Estado</th>
-                    <th class=" btn-dark">Observaciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for c in celulares %}
-                {% if c.activo == 1%}
-                <tr id="tabla_convenios" class="table-danger">
-                {% else %}
-                <tr id="tabla_convenios">
-                {% endif %}
-                    <td>{{c.operador}}</td>
-                    <td>{{c.pertenece}}</td>
-                    <td>{{c.quien_paga}}</td>
-                    <td>{{c.valor}}</td>
-                    <td>{{c.linea}}</td>
-                    {% if c.estado == 0%}
-                    <td>Activo</td>
+
+<div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    <div class="container-fluid">
+        <h1 class="text-secondary">Celulares Kosta Azul</h1>
+        <hr>
+        <div class="table"  id="divtable">
+            <table class="table table-hover table-striped" id="tabla_directorio">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Operador</th>
+                        <th>Dueño De la linea</th>
+                        <th>Quien la paga</th>
+                        <th>Valor</th>
+                        <th>Numero De Celular</th>
+                        <th>Estado</th>
+                        <th>Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in celulares %}
+                    {% if c.activo == 1%}
+                    <tr id="tabla_convenios" class="table-danger">
                     {% else %}
-                    <td>Inactivo</td>
+                    <tr id="tabla_convenios">
                     {% endif %}
-                    <td>{{c.observaciones}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
+                        <td>{{c.operador}}</td>
+                        <td>{{c.pertenece}}</td>
+                        <td>{{c.quien_paga}}</td>
+                        <td>{{c.valor}}</td>
+                        <td>{{c.linea}}</td>
+                        {% if c.estado == 0%}
+                        <td>Activo</td>
+                        {% else %}
+                        <td>Inactivo</td>
+                        {% endif %}
+                        <td>{{c.observaciones}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </div>
+    </div>
 </div>
 {% endblock %}

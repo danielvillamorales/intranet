@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
-</div>
-<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+<div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
     <div class="container-fluid" >       
         <div class="data-container">
             <a href="{% url 'directorio'%}" title="Directorio"><span class="btndir">Directorio</span></a>
@@ -26,31 +24,31 @@
                     </div>
                 </form>
                 <div class="table"  id="divtable">
-                    <table class="table table-hover" id="tabla_directorio">
-                        <thead>
+                    <table class="table table-hover table-striped" id="tabla_directorio">
+                        <thead class="table-primary">
                             <tr>
-                                <th class=" btn-dark">Dependencia</th>
-                                <th class=" btn-dark">Cargo</th>
-                                <th class=" btn-dark">Empleado</th>
-                                <th class=" btn-dark">Extension</th>
-                                <th class=" btn-dark">Email</th>
+                                <th>Dependencia</th>
+                                <th>Cargo</th>
+                                <th>Empleado</th>
+                                <th>Extension</th>
+                                <th>Email</th>
                             </tr>
                         </thead>
-                        <tbody class="accordion" id="accordionExample">
+                        <tbody class="accordion table-striped" id="accordionExample">
                         <div class="accordion-item">
                         {%for d in directorio %}
                                 <tr class="accordion-header" id="heading{{d.id}}" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapse{{d.id}}" aria-expanded="true" aria-controls="collapse{{d.id}}">
-                                    <td id="valorestabla">{{d.sede}}</td>
-                                    <td id="valorestabla">{{d.cargo}}</td>
-                                    <td id="valorestabla">{{d.usuario}}</td>
-                                    <td id="valorestabla">{{d.extension}}</td>
-                                    <td id="valorestabla">{{d.email}}</td>
+                                    <td>{{d.sede}}</td>
+                                    <td>{{d.cargo}}</td>
+                                    <td>{{d.usuario}}</td>
+                                    <td>{{d.extension}}</td>
+                                    <td>{{d.email}}</td>
                                 </tr>
                                 <tr>
                                     <td colspan="5" class="p-0">
                                         <div id="collapse{{d.id}}" class="accordion-collapse collapse sow" aria-labelledby="heading{{d.id}}" data-bs-parent="#accordionExample">
                                             <div class="accordion-body">
-                                                <table class="table table-dark table-striped table-hover">
+                                                <table class="table table-primary table-striped table-hover">
                                                     <tbody>
                                                         <tr>
                                                             <td>
@@ -107,14 +105,14 @@
             </div>
             <div class="tab-pane fade" id="nav-almacenes" role="tabpanel" aria-labelledby="nav-almacenes-tab">
                 <div class="table"  id="divtable">
-                    <table class="table table-hover" id="tabla_directorio">
-                        <thead>
+                    <table class="table table-hover tanle-striped" id="tabla_directorio">
+                        <thead >
                             <tr>
-                                <th class=" btn-dark">Almacen</th>
-                                <th class=" btn-dark">Ciudad</th>
-                                <th class=" btn-dark">Direccion & Horario</th>
-                                <th class=" btn-dark">Correo & Telefono</th>
-                                <th class=" btn-dark">Contacto</th>
+                                <th>Almacen</th>
+                                <th>Ciudad</th>
+                                <th>Direccion & Horario</th>
+                                <th>Correo & Telefono</th>
+                                <th>Contacto</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -143,12 +141,12 @@
             </div> 
         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             <div class="table"  id="divtable">
-                <table class="table table-hover" id="tabla_directorio">
+                <table class="table table-hover table-striped" id="tabla_directorio">
                     <thead>
                         <tr>
-                            <th class=" btn-dark">Ciudad</th>
-                            <th class=" btn-dark">Indicativo</th>
-                            <th class=" btn-dark">Numero</th>
+                            <th>Ciudad</th>
+                            <th>Indicativo</th>
+                            <th>Numero</th>
                         </tr>
                     </thead>
                     <tbody>

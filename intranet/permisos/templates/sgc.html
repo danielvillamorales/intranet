@@ -2,15 +2,21 @@
 {% extends "layout.html" %}
 {% block content %}
 {% load static %}
-<div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12 col-12 container-fluid" id="id_jstree" >
-    <input id="search-input" class="search-input" placeholder="Buscar Archivo...">
-    <br>
-    <div id="jstree">
+
+
+<div class="col-xxl-3 col-xl-3 col-lg-3 col-md-3 col-sm-12 col-xs-12 col-12" id="id_jstree" >
+    <div class="container-fluid">
+        <input id="search-input" class="search-input form-control" placeholder="Buscar Archivo...">
+        <br>
+        <div id="jstree">
+        </div>
     </div>
 </div>
-<div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12 col-12 container-fluid" >
-    <div id="id_contenidojstree">
-        <iframe src="{% static 'img/sgc.jpg' %}" id="objeto"></iframe>
+<div class="col-xxl-9 col-xl-9 col-lg-9 col-md-9 col-sm-12 col-xs-12 col-12" >
+    <div class="container-fluid">
+        <div id="id_contenidojstree">
+            <iframe src="{% static 'img/sgc.jpg' %}" id="objeto"></iframe>
+        </div>
     </div>    
 </div>
 {% endblock %}

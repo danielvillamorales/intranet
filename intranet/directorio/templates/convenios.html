@@ -1,22 +1,22 @@
 {% extends "layout.html" %}
 {% load static %}
 {% block content %}
-<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
-</div>
-<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+<div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    <h3 class="text-secondary m-2">Convenios</h3>
+    <hr>
     <div class="container-fluid" id="divbuttonpermisos">
         <a href="{% url 'subir_archivo'%}" class="btn btn-outline-primary" role="button" ><img src="{% static 'img/agregar.png'%}" id="permisosbtnagregar"> Nuevo Convenio</a>
     </div>
-    <div class="table"  id="divtable">
-        <table class="table table-hover" id="tabla_directorio">
-            <thead>
+    <div class="container-fluid mt-2"  id="divtable">
+        <table class="table table-hover table-striped table-sm" id="tabla_directorio">
+            <thead class="table-primary">
                 <tr>
-                    <th class=" btn-dark">Nombre de convenio</th>
-                    <th class=" btn-dark">Datos contacto</th>
-                    <th class=" btn-dark">Fecha inicial</th>
-                    <th class=" btn-dark">Fecha final</th>
-                    <th class=" btn-dark">Estado</th>
-                    <th class=" btn-dark">Acciones</th>
+                    <th>Nombre de convenio</th>
+                    <th>Datos contacto</th>
+                    <th>Fecha inicial</th>
+                    <th>Fecha final</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>

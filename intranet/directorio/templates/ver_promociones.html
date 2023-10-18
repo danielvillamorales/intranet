@@ -2,30 +2,29 @@
 {% load static %}
 {% block content %}
 {% load humanize %}
-<div class="col-xxl-1 col-xl-1 col-lg-1 col-md-1 col-sm-12 col-xs-12 col-12">
-</div>
-<div class="col-xxl-10 col-xl-10 col-lg-10 col-md-10 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+
+<div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
     
     <div class="container-fluid" id="divbuttonpermisos">
         <a href="{% url 'guardar_promocion'%}" class="btn btn-outline-primary" role="button" ><img src="{% static 'img/agregar.png'%}" id="permisosbtnagregar"> Crear Promoción</a>
         <a class="btn btn-outline-success" href="{% url 'exportar_promociones' %}">Exportar Promociones</a>
     </div>
-    <div class="table"  id="divtable">
-        <table class="table table-hover" id="tabla_directorio">
+    <div class="container-fluid"  id="divtable">
+        <table class="table table-hover table-striped table-sm" id="tabla_directorio">
             <thead>
                 <tr>
-                    <th class= " btn-dark">#</th>
-                    <th class=" btn-dark">Nombre de promocion</th>
-                    <th class=" btn-dark">Fecha inicial</th>
-                    <th class=" btn-dark">Fecha final</th>
-                    <th class=" btn-dark">Valor</th>
-                    <th class=" btn-dark">Imagen</th>
-                    <th class=" btn-dark">Acciones</th>
+                    <th>#</th>
+                    <th>Nombre de promocion</th>
+                    <th>Fecha inicial</th>
+                    <th>Fecha final</th>
+                    <th>Valor</th>
+                    <th>Imagen</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for p in promociones %}
-                <tr id="tabla_convenios">
+                <tr>
                     <td>{{p.contador}}</td>
                     <td>{{p.nombre}}</td>
                     <td>{{p.fecha_inicial}}</td>
