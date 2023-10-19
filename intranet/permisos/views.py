@@ -21,10 +21,10 @@ def permisos(request):
     user = get_object_or_404(User, username = request.user)
     encargados = UsuarioEncargado.objects.filter(encargado=user).values('usuario')
     if user.has_perm('permisos.ver_permisos_de_todos'):
-        lista_permisos = Permisos.objects.all().order_by('-fechaInicial')
+        lista_permisos = Permisos.objects.all().order_by('estado','-fechaInicial')
         usuarios = User.objects.filter(is_active=True).order_by('first_name')
     else:
-        lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).order_by('-fechaInicial')
+        lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).order_by('estado','-fechaInicial')
         usuarios = User.objects.filter(Q(is_active=True, id = user.id) | Q(is_active = True, id__in = encargados )).order_by('first_name')   
     motivos = Tipodepermiso.objects.all()
     if request.method == 'POST':
@@ -34,21 +34,21 @@ def permisos(request):
         if id_solicitado_por:
             solicitado_por = User.objects.get(pk=int(id_solicitado_por))
             print(solicitado_por)
-            lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=solicitado_por)).order_by('-fechaInicial')
+            lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=solicitado_por)).order_by('estado','-fechaInicial')
         if user.has_perm('permisos.ver_permisos_de_todos'):
             if id_estado:
-                lista_permisos = Permisos.objects.filter(estado=id_estado).order_by('-fechaInicial')
+                lista_permisos = Permisos.objects.filter(estado=id_estado).order_by('estado','-fechaInicial')
             
             if id_motivo:
                 motivo = Tipodepermiso.objects.get(pk=int(id_motivo))
-                lista_permisos = Permisos.objects.filter(tipopermiso=motivo).order_by('-fechaInicial')
+                lista_permisos = Permisos.objects.filter(tipopermiso=motivo).order_by('estado','-fechaInicial')
         else:
             if id_estado:
-                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(estado=id_estado).order_by('-fechaInicial')
+                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(estado=id_estado).order_by('estado','-fechaInicial')
             
             if id_motivo:
                 motivo = Tipodepermiso.objects.get(pk=int(id_motivo))
-                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(tipopermiso=motivo).order_by('-fechaInicial')
+                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(tipopermiso=motivo).order_by('estado','-fechaInicial')
         if id_estado or id_motivo or id_solicitado_por:
              return render(request,'permisos.html',{'lista_permisos':lista_permisos,'usuarios':usuarios,'motivos':motivos})
     page = request.GET.get('page', 1)
