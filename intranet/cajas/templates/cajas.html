@@ -19,7 +19,10 @@
             <button type="submit" class="btn btn-primary">Consultar</button>
         </div>
     </form>
-    <div class="container-fluid">
+        <div class="container-fluid text-center">
+            <h3 class="bg-ligth">Total: <span class="text-primary">{{total | intcomma}}</span></h3>
+        </div>
+        <div class="m-1">
         <table class="table table-sm table-striped table-hover">
             <thead class="table-primary">
                 <tr>
@@ -34,10 +37,10 @@
                 <tr>
                     <td>{{caja.fecha}}</td>
                     <td>{{caja.bodega}} <span class="text-sm text-danger">({{caja.banco}})</span></td>
-                    <td class="text-end text-primary">{{caja.valor | intcomma}}</td>
+                    <td class="text-end text-primary" style="font-size:16px;">{{caja.valor | intcomma}}</td>
                     <td> 
                         {{caja.observacion}}
-                        <a class="btn btn-sm btn-outline-primary text-end" onclick="mostrar_foto_cajas( {{caja.id}} )" href="#">  ver foto</a>
+                        <a class="text-end p-1 ms-1" onclick="mostrar_foto_cajas( {{caja.id}} )" href="#">  ver foto</a>
                     </td>
                 </tr>  
                 <tr>
@@ -49,13 +52,8 @@
                 </tr>
                 {% endfor %}
             </tbody>
-            <tfoot class="table-info">
-                <tr>
-                    <td colspan="2">Total:</td>
-                    <td colspan="2" class="text-center tex-primary">{{total |intcomma}}</td>
-                </tr>
-            </tfoot>
         </table>
+    </div>
         {% if cajas.has_other_pages %}
         <nav aria-label="..." class="container-fluid ms-2">
             <ul class="pagination">
@@ -86,7 +84,6 @@
             </ul>
         </nav>
         {% endif %}
-    </div>
 </div>
 
 <script>
