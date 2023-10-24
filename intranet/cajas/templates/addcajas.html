@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+{% load humanize %}
+
+<div class="col-12 container-fluid">
+    <h3 class="text-secondary text-center">Agregar Efectivo</h3>
+    <hr>
+    <div class="container-fluid">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+      
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default" for="fecha" >Fecha:</span>
+            <input required type="date" name="fecha" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_fecha">
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default" for="id_email" >Bodega:</span>
+            <select required type="email" name="bodega" class="form-select" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_bodega">
+                <option selected></option>
+                {% for bodega in bodegas%}
+                <option value="{{bodega.id}}">{{bodega}}</option>
+                {% endfor %}
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default" for="id_banco" >Banco:</span>
+            <select required type="email" name="banco" class="form-select" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_banco">
+                <option selected></option>
+                <option value="BBVA">BBVA</option>
+                <option value="COLPATRIA">COLPATRIA</option>
+                <option value="DAVIVIENDA">DAVIVIENDA</option>
+                <option value="BANCO DE BOGOTA">BANCO DE BOGOTA</option>
+                <option value="BANCOLOMBIA">BANCOLOMBIA</option>
+                <option value="DYJON">DYJON</option>
+                <option value="TESORERIA (JUAN GUILLERMO)">TESORERIA (JUAN GUILLERMO)</option>
+            </select>
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default" for="id_telefono" >Valor:</span>
+            <input required type="number" name="valor" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="id_valor">
+          </div> 
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default" for="id_observacion" >Observacion:</span>
+            <textarea required type="text" name="observacion" class="form-control" id="id_observacion"></textarea>
+          </div>
+          <div class="mb-3 mt-2">
+            <input class="bg-info form-control mt-2" type="file" name="imagen" id="id_archivo" accept="image/*">
+          </div>
+        <button class="btn btn-secondary" type="submit">Guardar</button>
+      </form>
+    </div>
+</div>
+
+
+{% endblock %}

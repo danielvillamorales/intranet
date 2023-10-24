@@ -38,6 +38,27 @@ function mostrar_foto(foto){
 
 };
 
+
+function mostrar_foto_cajas(foto){
+    console.log(foto);
+    var imagen = document.getElementById("cajas_"+foto);
+    var td = document.getElementById("td_"+foto);
+    if (td.style.display === "none") {
+        td.style.display = "block";
+        td.style.justifyContent = "center";
+      } else {
+        td.style.display = "none";
+        
+      }
+    if (imagen.style.display === "none") {
+        imagen.style.display = "block";
+      } else {
+        imagen.style.display = "none";
+      }
+
+
+};
+
 function validar_horas(fecha) {
     var button = document.getElementById("button-agregar");
     console.log(new Date(fecha).getHours());

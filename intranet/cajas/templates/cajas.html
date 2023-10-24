@@ -1,0 +1,143 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+{% load humanize %}
+
+
+<div class="col-12" id="contenido_directorio">
+    <a class="btn btn-sm btn-primary material-symbols-outlined m-1" href="{% url 'addcajas' %}">
+        add_circle
+    </a>
+    <a class="btn btn-sm btn-success material-symbols-outlined m-1"   id="exportButton">
+        vertical_align_bottom
+    </a>
+    <form method="post" class="m-2">
+        {% csrf_token %}
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="basic-addon1">Fecha</span>
+            <input type="date" class="form-control"  name="fecha" id="fecha" required>
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        </div>
+    </form>
+    <div class="container-fluid">
+        <table class="table table-sm table-striped table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Almacen</th>
+                    <th class="text-center">Valor</th>
+                    <th class="text-center">Consignacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for caja in cajas %}
+                <tr>
+                    <td>{{caja.fecha}}</td>
+                    <td>{{caja.bodega}} <span class="text-sm text-danger">({{caja.banco}})</span></td>
+                    <td class="text-end text-primary">{{caja.valor | intcomma}}</td>
+                    <td> 
+                        {{caja.observacion}}
+                        <a class="btn btn-sm btn-outline-primary text-end" onclick="mostrar_foto_cajas( {{caja.id}} )" href="#">  ver foto</a>
+                    </td>
+                </tr>  
+                <tr>
+                    <td  id="td_{{caja.id}}" style="display: none; align-items: center;">
+                        <img src="{{ caja.imagen.url }}" alt="imagen_banner" id="cajas_{{caja.id}}" style="display: none; height:300px; align-items: center; 
+                        justify-content: center;
+                        align-items: center; ">
+                    </td> 
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot class="table-info">
+                <tr>
+                    <td colspan="2">Total:</td>
+                    <td colspan="2" class="text-center tex-primary">{{total |intcomma}}</td>
+                </tr>
+            </tfoot>
+        </table>
+        {% if cajas.has_other_pages %}
+        <nav aria-label="..." class="container-fluid ms-2">
+            <ul class="pagination">
+                {% if cajas.has_previous %}
+                    <li class="material-symbols-outlined page-item">
+                        <a class="page-link"  aria-disabled="true" href="?page={{ cajas.previous_page_number }}">
+                            skip_previous
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item text-primary disabled" id="lidesactivado">
+                       <span class="material-symbols-outlined page-link" id="lidesactivado">
+                        skip_previous
+                       </span>
+                    </li>
+                {% endif %}
+                {% if cajas.has_next %}
+                    <li class="page-item">
+                        <a  class="material-symbols-outlined page-link" href="?page={{ cajas.next_page_number }}">
+                            skip_next
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item dark disabled" id="lidesactivado" >
+                        <span class="page-link" id="lidesactivado"><img src="{% static 'img/siguiente.png'%}"></span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    document.getElementById('exportButton').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Rango de Fechas',
+            html:
+                '<input type="date" class="form-control" id="fecha_inicial" required><br>' +
+                '<input type="date" class="form-control" id="fecha_final" required>',
+            showCancelButton: true,
+            confirmButtonText: 'Generate Excel',
+            showLoaderOnConfirm: true,}).then((result) => {
+                if (result.isConfirmed) {
+                console.log(result);
+                const fecha_inicial = document.getElementById('fecha_inicial').value;
+                const fecha_final = document.getElementById('fecha_final').value;
+
+                
+                // Make an AJAX request to your Django view to generate the Excel file
+                return fetch("{% url 'export_cajas' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `fecha_inicial=${fecha_inicial}&fecha_final=${fecha_final}`,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = 'cajas.xls';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(`Request failed: ${error}`);
+                    });
+                }
+                });      
+    });
+</script>
+
+
+{% endblock %}
+
