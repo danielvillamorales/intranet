@@ -12,8 +12,10 @@ from .forms import CajasForm
 from cajas.models import Bodegas
 from io import BytesIO
 import xlwt
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required
 def paginacion(request, paginator ):
     page = request.GET.get('page', 1)
     try:
@@ -24,6 +26,7 @@ def paginacion(request, paginator ):
         lista_permisos_pg = paginator.page(paginator.num_pages)
     return lista_permisos_pg
 
+
 def searchForDate(request):
     fecha = request.POST.get('fecha')
     if request.user.has_perm('cajas.ver_todas_las_cajas'):
@@ -31,6 +34,7 @@ def searchForDate(request):
     else:
         return Cajas.objects.filter(bodega__bodega__usuario=request.user, fecha=fecha).order_by('-fecha')
 
+@login_required
 def cajas(request):
     if request.user.has_perm('cajas.ver_cajas'):
         if request.user.has_perm('cajas.ver_todas_las_cajas'):
@@ -52,7 +56,7 @@ def cajas(request):
     messages.warning(request, 'No tiene permiso para ver cajas')
     return redirect('directorio')
 
-
+@login_required
 def addcajas(request):
     if request.user.has_perm('cajas.ver_todas_las_cajas'):
         bodegas = Bodegas.objects.all()
