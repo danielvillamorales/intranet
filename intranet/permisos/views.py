@@ -15,6 +15,10 @@ from os import walk, getcwd, path
 from permisos.models import UsuarioEncargado
 import json
 import pytz
+from datetime import time
+
+
+
 # Create your views here.
 @login_required
 def permisos(request):
@@ -40,15 +44,33 @@ def permisos(request):
                 lista_permisos = Permisos.objects.filter(estado=id_estado).order_by('estado','-fechaInicial')
             
             if id_motivo:
+                fecha_inicial = datetime.datetime.strptime(request.POST.get('fecha_inicio'), '%Y-%m-%d')
+                fecha_final = datetime.datetime.strptime(request.POST.get('fecha_fin'), '%Y-%m-%d')
+                # Establece la hora de la fecha inicial a las 00:00:00
+                # Establece la hora de la fecha inicial a las 00:00:00
+                fecha_inicial = fecha_inicial.replace(hour=0, minute=0, second=0)
+
+                # Establece la hora de la fecha final a las 23:59:59
+                fecha_final = fecha_final.replace(hour=23, minute=59, second=59)
                 motivo = Tipodepermiso.objects.get(pk=int(id_motivo))
-                lista_permisos = Permisos.objects.filter(tipopermiso=motivo).order_by('estado','-fechaInicial')
+                lista_permisos = Permisos.objects.filter(tipopermiso=motivo).filter(Q(fechaInicial__range =( fecha_inicial,fecha_final)) |
+                                                                                  Q(fechaFinal__range =( fecha_inicial,fecha_final))   ).order_by('estado','-fechaInicial')
         else:
             if id_estado:
                 lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(estado=id_estado).order_by('estado','-fechaInicial')
             
             if id_motivo:
+                fecha_inicial = datetime.datetime.strptime(request.POST.get('fecha_inicio'), '%Y-%m-%d')
+                fecha_final = datetime.datetime.strptime(request.POST.get('fecha_fin'), '%Y-%m-%d')
+                # Establece la hora de la fecha inicial a las 00:00:00
+                # Establece la hora de la fecha inicial a las 00:00:00
+                fecha_inicial = fecha_inicial.replace(hour=0, minute=0, second=0)
+
+                # Establece la hora de la fecha final a las 23:59:59
+                fecha_final = fecha_final.replace(hour=23, minute=59, second=59)
                 motivo = Tipodepermiso.objects.get(pk=int(id_motivo))
-                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(tipopermiso=motivo).order_by('estado','-fechaInicial')
+                lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(tipopermiso=motivo).filter(
+                    Q(fechaInicial__range =( fecha_inicial,fecha_final)) | Q(fechaFinal__range =( fecha_inicial,fecha_final))   ).order_by('estado','-fechaInicial')
         if id_estado or id_motivo or id_solicitado_por:
              return render(request,'permisos.html',{'lista_permisos':lista_permisos,'usuarios':usuarios,'motivos':motivos})
     page = request.GET.get('page', 1)
