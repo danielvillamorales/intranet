@@ -52,6 +52,7 @@ def permisos(request):
 
                 # Establece la hora de la fecha final a las 23:59:59
                 fecha_final = fecha_final.replace(hour=23, minute=59, second=59)
+                print(fecha_inicial,fecha_final)
                 motivo = Tipodepermiso.objects.get(pk=int(id_motivo))
                 lista_permisos = Permisos.objects.filter(tipopermiso=motivo).filter(Q(fechaInicial__range =( fecha_inicial,fecha_final)) |
                                                                                   Q(fechaFinal__range =( fecha_inicial,fecha_final))   ).order_by('estado','-fechaInicial')
