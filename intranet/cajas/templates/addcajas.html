@@ -47,10 +47,47 @@
           <div class="mb-3 mt-2">
             <input class="bg-info form-control mt-2" type="file" name="imagen" id="id_archivo" accept="image/*">
           </div>
-        <button class="btn btn-secondary" type="submit">Guardar</button>
+        <button class="btn btn-secondary" type="submit" id="butoncajasave">Guardar</button>
       </form>
     </div>
 </div>
+<script>
+  document.getElementById("butoncajasave").addEventListener("click", function(event) {
+    event.preventDefault(); // Prevenir el envío predeterminado del formulario
+
+    var button = this;
+    button.disabled = true;
+    button.innerHTML = "Validando...";
+
+    var form = button.closest("form"); // Obtener el formulario más cercano al botón
+
+    // Realiza la validación del formulario
+    if (formIsFilled(form)) {
+      // El formulario está lleno y es válido, puedes enviarlo
+      form.submit();
+    } else {
+      // El formulario no está lleno, muestra un mensaje de error o realiza otra acción
+      button.disabled = false;
+      button.innerHTML = "Guardar"; // Restablece el texto del botón
+      alert("Por favor, completa todos los campos del formulario.");
+    }
+  });
+
+  function formIsFilled(form) {
+    // Realiza la validación personalizada aquí
+    // Verifica que todos los campos necesarios estén completos
+
+    // Por ejemplo, puedes verificar que los campos de entrada no estén vacíos
+    var inputs = form.querySelectorAll("input[type=text], input[type=date], input[type=email], input[type=number], textarea, select, input[type=file]");
+    for (var i = 0; i < inputs.length; i++) {
+      if (!inputs[i].value) {
+        return false; // Si encuentra un campo vacío, el formulario no está lleno
+      }
+    }
+
+    return true; // Todos los campos requeridos están llenos
+  }
+</script>
 
 
 {% endblock %}
