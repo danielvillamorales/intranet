@@ -69,7 +69,7 @@
       // El formulario no está lleno, muestra un mensaje de error o realiza otra acción
       button.disabled = false;
       button.innerHTML = "Guardar"; // Restablece el texto del botón
-      alert("Por favor, completa todos los campos del formulario.");
+      Swal.fire("Por favor, completa todos los campos del formulario.","error");
     }
   });
 
