@@ -7,6 +7,7 @@ from datetime import date
 class Bodegas(models.Model):
     codigo = models.CharField(max_length=3)
     descripcion = models.CharField(max_length=50)
+    centrocosto = models.CharField(max_length=15, default='13102')
 
     def __str__(self):
         return f'{self.codigo} - {self.descripcion}'

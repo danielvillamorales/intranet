@@ -11,6 +11,9 @@
     <a class="btn btn-sm btn-success material-symbols-outlined m-1"   id="exportButton">
         vertical_align_bottom
     </a>
+    <a class="btn btn-sm btn-warning material-symbols-outlined m-1"   id="exportConta">
+        calculate
+    </a>
     <form method="post" class="m-2">
         {% csrf_token %}
         <div class="input-group input-group-sm mb-3">
@@ -123,6 +126,59 @@
                         a.style.display = 'none';
                         a.href = url;
                         a.download = 'cajas.xls';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(`Request failed: ${error}`);
+                    });
+                }
+                });      
+    });
+
+
+
+    document.getElementById('exportConta').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Rango de Fechas y numeros',
+            html:
+                '<input type="date" class="form-control mt-1" id="fecha_inicial" required>' +
+                '<input type="date" class="form-control mt-1" id="fecha_final" required>' +
+                '<input type="number" class="form-control mt-1" placeholder="Ultimo numero documento Conta"  id="numero_conta" required>' + 
+                '<input type="number" class="form-control mt-1" placeholder="Ultimo numero documento teso"  id="numero_teso" required>',
+            showCancelButton: true,
+            confirmButtonText: 'Generate Excel',
+            showLoaderOnConfirm: true,}).then((result) => {
+                if (result.isConfirmed) {
+                console.log(result);
+                const fecha_inicial = document.getElementById('fecha_inicial').value;
+                const fecha_final = document.getElementById('fecha_final').value;
+                const numero_conta = document.getElementById('numero_conta').value;
+                const numero_teso = document.getElementById('numero_teso').value;
+
+                
+                // Make an AJAX request to your Django view to generate the Excel file
+                return fetch("{% url 'export_txt_contabilidad' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `fecha_inicial=${fecha_inicial}&fecha_final=${fecha_final}&numero_conta=${numero_conta}&numero_teso=${numero_teso}`,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = 'contabilidad.txt';
                         document.body.appendChild(a);
                         a.click();
                         window.URL.revokeObjectURL(url);

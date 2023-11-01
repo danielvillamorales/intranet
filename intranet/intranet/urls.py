@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from directorio.views import directorio, subir_archivo, descargar_pdf, archivo_detalle, desactivar_convenio, guardar_promocion, ver_promociones, ver_promocion,exportar_promociones, editar_convenio,ver_lineas_celular
 from permisos.views import sgc,permisos,agregar_permisos,aprobar_permisos,rechazar_permisos,salida_permisos,entrada_permisos,contenidojson,calidad,eliminar_permiso
-from cajas.views import cajas, addcajas, export_cajas
+from cajas.views import cajas, addcajas, export_cajas, export_txt_contabilidad
 from django.contrib.auth.views import LoginView,LogoutView
 from django.conf.urls.static import static
 from django.conf import settings
@@ -53,7 +53,8 @@ urlpatterns = [
     path('ver_lineas_celular/',ver_lineas_celular,name='ver_lineas_celular'),
     path('cajas/',cajas, name='cajas'),
     path('addcajas/', addcajas, name='addcajas'),
-    path('export_cajas', export_cajas, name='export_cajas')
+    path('export_cajas', export_cajas, name='export_cajas'),
+    path('export_txt_contabilidad', export_txt_contabilidad, name='export_txt_contabilidad')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
