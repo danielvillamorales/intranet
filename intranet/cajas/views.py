@@ -31,8 +31,8 @@ def validar_caja(caja, numero_teso, numero_conta, numero_val ):
     cuenta = DICIONARIO_BANCO[caja.banco]
     if caja.banco == 'TESORERIA (JUAN GUILLERMO)':
         numero = numero_teso+numero_val
-        txt+= f'RCG%TESO%{str(numero)}%{caja.fecha.strftime("%d/%m/%Y")}%{str(numero)}%%%{cuenta}%efectivo caja {caja.bodega.descripcion}: {caja.observacion}%%{caja.bodega.centrocosto}%{str(caja.valor)}%%%\n'
-        txt+= f'RCG%TESO%{str(numero)}%{caja.fecha.strftime("%d/%m/%Y")}%{str(numero)}%%%11050509%efectivo caja {caja.bodega.descripcion}: {caja.observacion}%%13102%%{str(caja.valor)}%%\n'
+        txt+= f'RCG%TESO%{str(numero)}%{caja.fecha.strftime("%d/%m/%Y")}%{str(numero)}%%%{cuenta}%efectivo caja {caja.bodega.descripcion}: {caja.observacion}%%13102%{str(caja.valor)}%%%\n'
+        txt+= f'RCG%TESO%{str(numero)}%{caja.fecha.strftime("%d/%m/%Y")}%{str(numero)}%%%11050509%efectivo caja {caja.bodega.descripcion}: {caja.observacion}%%{caja.bodega.centrocosto}%%{str(caja.valor)}%%\n'
         return txt
     numero = numero_conta+numero_val
     txt+= f'CON%04%{str(numero)}%{caja.fecha.strftime("%d/%m/%Y")}%{str(numero)}%%%{cuenta}%efectivo caja {caja.bodega.descripcion}: {caja.observacion}%%%{caja.valor}%%%\n'
