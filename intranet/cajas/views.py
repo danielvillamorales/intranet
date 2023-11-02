@@ -13,6 +13,8 @@ from cajas.models import Bodegas, GastosAlmacenes
 from io import BytesIO
 import xlwt
 from django.contrib.auth.decorators import login_required
+import io
+import pandas as pd
 # Create your views here.
 
 
@@ -139,6 +141,25 @@ def export_cajas(request):
     response['Content-Disposition'] = 'attachment; filename=cajas.xls'
     output = BytesIO()
     wb.save(output)
+    output.seek(0)
+    response.write(output.getvalue())
+    return response
+
+
+def export_cajas_dos(request):
+    fecha_inicial = request.POST.get('fecha_inicial')
+    fecha_final = request.POST.get('fecha_final')
+    cajas = Cajas.objects.filter(fecha__range=(fecha_inicial, fecha_final)).values_list(
+        'fecha', 'bodega__descripcion', 'banco', 'observacion', 'valor', 'imagen'
+    )
+    df = pd.DataFrame(cajas, columns=['fecha', 'bodega', 'banco', 'observacion', 'valor', 'imagen'])
+    df['imagen'] = 'https://intranet.kostazul.com/media/' + df['imagen']
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='openpyxl')
+    df.to_excel(writer, sheet_name='Cajas', index=False)
+    writer.close()
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=cajas.xlsx'
     output.seek(0)
     response.write(output.getvalue())
     return response

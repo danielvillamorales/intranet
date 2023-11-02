@@ -106,7 +106,7 @@
 
                 
                 // Make an AJAX request to your Django view to generate the Excel file
-                return fetch("{% url 'export_cajas' %}", {
+                return fetch("{% url 'export_cajas_dos' %}", {
                     method: 'POST',
                     headers: {
                         'X-CSRFToken': '{{ csrf_token }}',
@@ -125,7 +125,7 @@
                         const a = document.createElement('a');
                         a.style.display = 'none';
                         a.href = url;
-                        a.download = 'cajas.xls';
+                        a.download = 'cajas.xlsx';
                         document.body.appendChild(a);
                         a.click();
                         window.URL.revokeObjectURL(url);
