@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block content %}
+{% load humanize %}
+
+
+<div class="col-12" id="contenido_directorio">
+    <form method="post" class="m-2">
+        {% csrf_token %}
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text" id="basic-addon1">Fecha</span>
+            <input type="date" class="form-control"  name="fecha" id="fecha" required>
+            <button type="submit" class="btn btn-primary">Consultar</button>
+        </div>
+    </form>
+        <div class="container-fluid text-center">
+            <h3 class="bg-ligth">Total: <span class="text-primary">{{total | intcomma}}</span></h3>
+        </div>
+        <div class="m-1">
+        <table class="table table-sm table-striped table-hover">
+            <thead class="table-primary">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Almacen</th>
+                    <th class="text-center">Valor</th>
+                    <th class="text-center">Observacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for gasto in gastos %}
+                <tr>
+                    <td>{{gasto.fecha}}</td>
+                    <td>{{gasto.almacen}}</td>
+                    <td class="text-end text-primary" style="font-size:16px;">{{gasto.valor | intcomma}}</td>
+                    <td> 
+                       {{gasto.descripcion}}( {{gasto.observacion}} ) 
+                    </td>
+                </tr>  
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+

@@ -35,3 +35,17 @@ class Cajas(models.Model):
     
     class Meta:
         permissions = [('ver_cajas','ver_cajas'),('ver_todas_las_cajas','ver_todas_las_cajas')]
+
+class GastosAlmacenes(models.Model):
+    id = models.FloatField(primary_key=True)
+    almacen = models.CharField(max_length=30,  blank=True, null=True)
+    fecha = models.DateField(blank=True, null=True)
+    nit = models.FloatField(blank=True, null=True)
+    descripcion = models.CharField(max_length=250,  blank=True, null=True)
+    observacion = models.CharField(max_length=4000, blank=True, null=True)
+    valor = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'gastos_almacenes'
+        app_label = 'logistica_db'

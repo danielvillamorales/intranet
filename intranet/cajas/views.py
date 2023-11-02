@@ -9,7 +9,7 @@ from datetime import date
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Sum
 from .forms import CajasForm
-from cajas.models import Bodegas
+from cajas.models import Bodegas, GastosAlmacenes
 from io import BytesIO
 import xlwt
 from django.contrib.auth.decorators import login_required
@@ -142,3 +142,18 @@ def export_cajas(request):
     output.seek(0)
     response.write(output.getvalue())
     return response
+
+@login_required
+def ver_gastos(request):
+    if request.user.has_perm('cajas.ver_todas_las_cajas'):
+        fecha = date.today()
+        if request.method == 'POST':
+            fecha = request.POST.get('fecha')
+        gastos = GastosAlmacenes.objects.using('logistica_db').filter(fecha=fecha).order_by('almacen')
+        #print(gastos)
+        total = gastos.aggregate(Sum('valor'))['valor__sum']
+        
+        return render(request, 'gastos.html', {'gastos':gastos, 'total':total})
+    else:
+        messages.warning(request, 'No tiene permiso para ver gastos')
+        return redirect('directorio')
