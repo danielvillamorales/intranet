@@ -1,0 +1,28 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<div class="col-12">
+    <div class="row mt-5">
+        <div class="col-4">
+            <div class="card border-primary p-3 text-center">
+                <h5 class="card-title text-primary">Convertir PDF a WORD </h5>
+                <div class="card-body">
+                    <p class="card-text">Podras convertir los archivos pdf a word</p>
+                </div>
+                <a href="{% url 'convertpdftoword'%}" class="btn btn-primary">Ir</a>
+            </div>   
+        </div>
+        <div class="col-4">
+            <div class="card border-primary p-3 text-center">
+                <h5 class="card-title text-primary">Unir PDF </h5>
+                <div class="card-body">
+                    <p class="card-text">Puedes unir varios pdf en uno solo</p>
+                </div>
+                <a href="{% url 'unir_pdfs' %}" class="btn btn-primary">Ir</a>
+            </div>   
+        </div>
+
+    </div>
+</div>
+{% endblock %}

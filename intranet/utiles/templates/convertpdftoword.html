@@ -1,0 +1,29 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<div class="col-12">
+    <h5 class="m-2 text-secondary">Convertir PDF a documento WORD</h5>
+    <hr>
+    <form method="post" enctype="multipart/form-data" class="p-3" id="pdfForm">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="pdf_file" class="form-label">Selecciona un PDF:</label>
+        <input type="file" class="form-control" id="pdf_file" name="pdf_file" accept=".pdf" required onchange="validateFile()">
+      </div>
+      <button type="submit" class="btn btn-primary" id="convertBtn" disabled>Convertir</button>
+    </form>
+</div>
+<script>
+    function validateFile() {
+        var fileInput = document.getElementById('pdf_file');
+        var convertBtn = document.getElementById('convertBtn');
+
+        if (fileInput.files.length > 0 && fileInput.files[0].name.endsWith('.pdf')) {
+            convertBtn.disabled = false;
+        } else {
+            convertBtn.disabled = true;
+        }
+    }
+</script>
+{% endblock %}

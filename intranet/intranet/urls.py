@@ -19,6 +19,7 @@ from django.urls import path
 from directorio.views import directorio, subir_archivo, descargar_pdf, archivo_detalle, desactivar_convenio, guardar_promocion, ver_promociones, ver_promocion,exportar_promociones, editar_convenio,ver_lineas_celular
 from permisos.views import sgc,permisos,agregar_permisos,aprobar_permisos,rechazar_permisos,salida_permisos,entrada_permisos,contenidojson,calidad,eliminar_permiso
 from cajas.views import cajas, addcajas, export_cajas, export_txt_contabilidad,ver_gastos,export_cajas_dos
+from utiles.views import menu_utiles, convertpdftoword, unir_pdfs
 from django.contrib.auth.views import LoginView,LogoutView
 from django.conf.urls.static import static
 from django.conf import settings
@@ -57,6 +58,9 @@ urlpatterns = [
     path('export_txt_contabilidad', export_txt_contabilidad, name='export_txt_contabilidad'),
     path('ver_gastos', ver_gastos, name='ver_gastos'),
     path('export_cajas_dos', export_cajas_dos, name='export_cajas_dos'),
+    path('menu_utiles/',menu_utiles, name='menu_utiles'),
+    path('convertpdftoword/', convertpdftoword, name='convertpdftoword'),
+    path('unir_pdfs/', unir_pdfs, name='unir_pdfs'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

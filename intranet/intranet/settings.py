@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'permisos',
     'directorio',
     'cajas',
+    'utiles',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,32 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+
+<div class="col-12">
+    
+        <h5 class="m-2 text-secondary">Quitar fondo a una imagen</h5>
+        <hr>
+        <form method="post" enctype="multipart/form-data" class="p-3" id="pdfForm">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="pdf_file" class="form-label">Selecciona una imagen:</label>
+            <input type="file" class="form-control" id="imagen" name="imagen" accept=".jpg, .jpeg, .png" required onchange="validateFile()">
+        </div>
+        <button type="submit" class="btn btn-primary" id="convertBtn" disabled>Convertir</button>
+        </form>
+</div>
+
+<script>
+    function validateFile() {
+        var fileInput = document.getElementById('imagen');
+        var convertBtn = document.getElementById('convertBtn');
+
+        if (fileInput.files.length > 0 && (fileInput.files[0].name.endsWith('.jpg') || fileInput.files[0].name.endsWith('.jpeg') || fileInput.files[0].name.endsWith('.png'))) {
+            convertBtn.disabled = false;
+        } else {
+            convertBtn.disabled = true;
+        }
+    }
+</script>
+{% endblock %}
