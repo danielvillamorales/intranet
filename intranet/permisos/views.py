@@ -337,3 +337,36 @@ def sgc(request):
 def calidad(request):
     beneficios = Beneficios.objects.filter(estado=1).order_by('id') 
     return render(request,'calidad.html',{'beneficios':beneficios})
+
+@login_required
+def permisos_encargado(request):
+    lista_permisos = []
+    lista_encargados = UsuarioEncargado.objects.all().values('encargado__id','encargado__first_name','encargado__last_name').distinct()
+    permisos_pendientes = 0
+    permisos_aprobados = 0
+    permisos_rechazados = 0
+    userencargado = ''
+    if request.method== 'POST':
+        userencargado = get_object_or_404(User,pk=request.POST.get('encargado'))
+        encargados = UsuarioEncargado.objects.filter(encargado__id= userencargado.id).values('usuario__id')
+        lista_permisos = Permisos.objects.filter(Q(usuariodepermiso__in = encargados)).order_by('estado','-fechaInicial')
+        permisos_pendientes = Permisos.objects.filter(Q(usuariodepermiso__in = encargados)).filter(estado=0).count()
+        permisos_aprobados = Permisos.objects.filter(Q(usuariodepermiso__in = encargados)).filter(estado=1, 
+                                                                                                  fechaaprobacion__year = datetime.date.today().year,
+                                                                                                    fechacreacion__gte=datetime.date(2023, 9, 1)  ).count()
+        permisos_rechazados = Permisos.objects.filter(Q(usuariodepermiso__in = encargados)).filter(estado=2 , 
+                                                                                                   fechaaprobacion__year = datetime.date.today().year,
+                                                                                                   fechacreacion__gte=datetime.date(2023, 9, 1) ).count()
+        
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(lista_permisos, 150)
+    try:
+        lista_permisos_pg = paginator.page(page)
+    except PageNotAnInteger:
+        lista_permisos_pg = paginator.page(1)
+    except EmptyPage:
+        lista_permisos_pg = paginator.page(paginator.num_pages)
+    return render(request,'permisos_encargados.html',{'lista_permisos':lista_permisos_pg, 'lista_encargados':lista_encargados,
+                                                     'permisos_pendientes':permisos_pendientes, 'permisos_aprobados':permisos_aprobados, 
+                                                     'permisos_rechazados':permisos_rechazados, 'encargado':userencargado})
