@@ -28,7 +28,6 @@
                         <thead class="table-primary">
                             <tr>
                                 <th>Dependencia</th>
-                                <th>Cargo</th>
                                 <th>Empleado</th>
                                 <th>Extension</th>
                                 <th>Email</th>
@@ -39,7 +38,6 @@
                         {%for d in directorio %}
                                 <tr class="accordion-header" id="heading{{d.id}}" class="accordion-button" data-bs-toggle="collapse" data-bs-target="#collapse{{d.id}}" aria-expanded="true" aria-controls="collapse{{d.id}}">
                                     <td>{{d.sede}}</td>
-                                    <td>{{d.cargo}}</td>
                                     <td>{{d.usuario}}</td>
                                     <td>{{d.extension}}</td>
                                     <td>{{d.email}}</td>

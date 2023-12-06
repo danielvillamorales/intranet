@@ -22,14 +22,15 @@ def directorio(request):
     diralm = Dir_almacenes.objects.all()
     print(busqueda)
     if busqueda:
-        directorio = Directorio.objects.all().filter(
+        directorio = Directorio.objects.filter(
+            Q(sede__descripcion__icontains=busqueda)|
             Q(usuario__icontains=busqueda)|
             Q(extension__icontains=busqueda)|
             Q(direccion__icontains=busqueda)|
             Q(email__icontains=busqueda)       
-        ).distinct()
+        ).order_by('sede__descripcion', 'usuario')
     else:
-        directorio = Directorio.objects.order_by('sede')
+        directorio = Directorio.objects.order_by('sede__descripcion', 'usuario')
     return render(request,'directorio.html',{'directorio':directorio,'did':did,'diralm':diralm})
 
 
