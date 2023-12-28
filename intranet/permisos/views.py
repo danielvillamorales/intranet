@@ -5,7 +5,7 @@ from permisos.models import Tipodepermiso
 from permisos.models import Permisos
 from django.db.models import Q
 from django.conf import settings
-from django.contrib.auth.models import User,Permission,ContentType,Group
+from django.contrib.auth.models import User,Permission,Group
 from django.contrib.auth.decorators import login_required
 from permisos.forms import PermisosForm
 import datetime
@@ -15,7 +15,10 @@ from os import walk, getcwd, path
 from permisos.models import UsuarioEncargado
 import json
 import pytz
-from datetime import time
+from datetime import time, datetime,date
+import io
+import pandas as pd
+
 
 
 
@@ -44,8 +47,8 @@ def permisos(request):
                 lista_permisos = Permisos.objects.filter(estado=id_estado).order_by('estado','-fechaInicial')
             
             if id_motivo:
-                fecha_inicial = datetime.datetime.strptime(request.POST.get('fecha_inicio'), '%Y-%m-%d')
-                fecha_final = datetime.datetime.strptime(request.POST.get('fecha_fin'), '%Y-%m-%d')
+                fecha_inicial = datetime.strptime(request.POST.get('fecha_inicio'), '%Y-%m-%d')
+                fecha_final = datetime.strptime(request.POST.get('fecha_fin'), '%Y-%m-%d')
                 # Establece la hora de la fecha inicial a las 00:00:00
                 # Establece la hora de la fecha inicial a las 00:00:00
                 fecha_inicial = fecha_inicial.replace(hour=0, minute=0, second=0)
@@ -61,8 +64,8 @@ def permisos(request):
                 lista_permisos = Permisos.objects.filter(Q(usuariodepermiso=user.id) | Q(usuariodepermiso__in = encargados)).filter(estado=id_estado).order_by('estado','-fechaInicial')
             
             if id_motivo:
-                fecha_inicial = datetime.datetime.strptime(request.POST.get('fecha_inicio'), '%Y-%m-%d')
-                fecha_final = datetime.datetime.strptime(request.POST.get('fecha_fin'), '%Y-%m-%d')
+                fecha_inicial = datetime.strptime(request.POST.get('fecha_inicio'), '%Y-%m-%d')
+                fecha_final = datetime.strptime(request.POST.get('fecha_fin'), '%Y-%m-%d')
                 # Establece la hora de la fecha inicial a las 00:00:00
                 # Establece la hora de la fecha inicial a las 00:00:00
                 fecha_inicial = fecha_inicial.replace(hour=0, minute=0, second=0)
@@ -104,8 +107,8 @@ def agregar_permisos(request):
                 messages.error(request,'error en las fechas dadas')
                 return redirect('nuevo_permiso')
             else:
-                fecha_inicial = datetime.datetime.strptime(request.POST.get('get_fechainicial'),format)
-                fecha_final = datetime.datetime.strptime(request.POST.get('get_fechafinal'),format)
+                fecha_inicial = datetime.strptime(request.POST.get('get_fechainicial'),format)
+                fecha_final = datetime.strptime(request.POST.get('get_fechafinal'),format)
                 evaluar = formulario.save(commit=False)
                 if len(UsuarioEncargado.objects.filter(usuario=evaluar.usuariodepermiso)) == 0:
                     messages.error(request,'El usuario no tiene un encargado asignado')
@@ -119,14 +122,14 @@ def agregar_permisos(request):
                         post = formulario.save()
                         post.fechaInicial = fecha_inicial
                         post.fechaFinal = fecha_final
-                        post.fechacreacion = datetime.datetime.now()
+                        post.fechacreacion = datetime.now()
                         post.usuariodecreacion = user
                         post.save()                        
                 else:
                     post = formulario.save()
                     post.fechaInicial = fecha_inicial
                     post.fechaFinal = fecha_final
-                    post.fechacreacion = datetime.datetime.now()
+                    post.fechacreacion = datetime.now()
                     post.usuariodecreacion = user
                     post.save()
             return redirect('permisos')
@@ -148,7 +151,7 @@ def aprobar_permisos(request,id):
             else:
                 permiso.estado = 1
                 permiso.usuarioaprobacion = user
-                permiso.fechaaprobacion = datetime.datetime.now()
+                permiso.fechaaprobacion = datetime.now()
                 permiso.save()
                 messages.success(request,'Se aprobó el permiso')
         else:
@@ -163,7 +166,7 @@ def aprobar_permisos(request,id):
             else:
                 permiso.estado = 1
                 permiso.usuarioaprobacion = user
-                permiso.fechaaprobacion = datetime.datetime.now()
+                permiso.fechaaprobacion = datetime.now()
                 permiso.save()
                 messages.success(request,'Se aprobó el permiso')
         else:
@@ -185,7 +188,7 @@ def rechazar_permisos(request,id):
             else:
                 permiso.estado = 2
                 permiso.usuarioaprobacion = user
-                permiso.fechaaprobacion = datetime.datetime.now()
+                permiso.fechaaprobacion = datetime.now()
                 permiso.save()
                 messages.warning(request,'Se rechazo el permiso')
         else:
@@ -198,7 +201,7 @@ def rechazar_permisos(request,id):
             else:
                 permiso.estado = 2
                 permiso.usuarioaprobacion = user
-                permiso.fechaaprobacion = datetime.datetime.now()
+                permiso.fechaaprobacion = datetime.now()
                 permiso.save()
                 messages.warning(request,'Se rechazo el permiso')
         else:
@@ -232,9 +235,9 @@ def entrada_permisos(request, id ):
     if user.has_perm('permisos.salida_y_entrada'):
         if permiso:
             if permiso.reingreso is None:
-                permiso.reingreso=datetime.datetime.now()
+                permiso.reingreso=datetime.now()
                 permiso.save()
-                messages.success(request,f'hora de reingreso {datetime.datetime.now()}')
+                messages.success(request,f'hora de reingreso {datetime.now()}')
             else:
                 messages.error(request,'ya se dio una hora de reingreso')
         else:
@@ -251,9 +254,9 @@ def salida_permisos(request,id):
         if permiso:
             if  permiso.salida is None:
                 tz = pytz.timezone('America/Bogota')
-                permiso.salida=datetime.datetime.now()
+                permiso.salida=datetime.now()
                 permiso.save()
-                messages.success(request,f'hora de salida {datetime.datetime.now()}')
+                messages.success(request,f'hora de salida {datetime.now()}')
             else:
                 messages.error(request,'ya se dio una hora de salida')
         else:
@@ -352,11 +355,11 @@ def permisos_encargado(request):
         lista_permisos = Permisos.objects.filter(Q(usuariodepermiso__in = encargados)).order_by('estado','-fechaInicial')
         permisos_pendientes = Permisos.objects.filter(Q(usuariodepermiso__in = encargados)).filter(estado=0).count()
         permisos_aprobados = Permisos.objects.filter(Q(usuariodepermiso__in = encargados)).filter(estado=1, 
-                                                                                                  fechaaprobacion__year = datetime.date.today().year,
-                                                                                                    fechacreacion__gte=datetime.date(2023, 9, 1)  ).count()
+                                                                                                  fechaaprobacion__year = date.today().year,
+                                                                                                    fechacreacion__gte=date(2023, 9, 1)  ).count()
         permisos_rechazados = Permisos.objects.filter(Q(usuariodepermiso__in = encargados)).filter(estado=2 , 
-                                                                                                   fechaaprobacion__year = datetime.date.today().year,
-                                                                                                   fechacreacion__gte=datetime.date(2023, 9, 1) ).count()
+                                                                                                   fechaaprobacion__year = date.today().year,
+                                                                                                   fechacreacion__gte=date(2023, 9, 1) ).count()
         
 
     page = request.GET.get('page', 1)
@@ -370,3 +373,50 @@ def permisos_encargado(request):
     return render(request,'permisos_encargados.html',{'lista_permisos':lista_permisos_pg, 'lista_encargados':lista_encargados,
                                                      'permisos_pendientes':permisos_pendientes, 'permisos_aprobados':permisos_aprobados, 
                                                      'permisos_rechazados':permisos_rechazados, 'encargado':userencargado})
+
+
+def convert_to_bogota_timezone(dt):
+    bogota_tz = pytz.timezone('America/Bogota')
+    return dt.astimezone(bogota_tz).strftime('%Y-%m-%d %H:%M:%S') if dt else None
+
+
+def export_permisos(request):
+    user = get_object_or_404(User, username = request.user)
+    
+    fecha_inicial = datetime.strptime(request.POST.get('fecha_inicial'), '%Y-%m-%d')
+    fecha_final = datetime.strptime(request.POST.get('fecha_final'), '%Y-%m-%d')
+    fecha_final = fecha_final.replace(hour=23, minute=59, second=59)
+    id_motivo = request.POST.get('motivo', False)
+    encargados = UsuarioEncargado.objects.filter(encargado=user).values('usuario')
+    if user.has_perm('permisos.ver_permisos_de_todos') or len(encargados)>0:
+        if id_motivo:
+            motivo = Tipodepermiso.objects.get(pk=int(id_motivo))
+            print(motivo)
+            cajas = Permisos.objects.filter(Q(tipopermiso=motivo)).filter((Q(fechaInicial__range=(fecha_inicial, fecha_final)) | Q(fechaFinal__range = (fecha_inicial, fecha_final)))).values_list(
+            'usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre')
+        else:
+            print('tiene permisos de todos sin motivo')
+            cajas = Permisos.objects.filter(Q(fechaInicial__range=(fecha_inicial, fecha_final)) | Q(fechaFinal__range = (fecha_inicial, fecha_final)) ).values_list(
+             'usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre'
+        )
+    else:
+        print('no tiene permisos')
+        cajas = Permisos.objects.filter(Q(usuariodepermiso=user)).filter(Q(fechaInicial__range=(fecha_inicial, fecha_final)) | Q(fechaFinal__range = (fecha_inicial, fecha_final)) ).values_list(
+             'usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre'
+        )
+    print(cajas)
+    df = pd.DataFrame(cajas, columns=['nombre','apellidos', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipo de permiso', 'beneficio nombre'])
+    # Convertir los datetimes a formato sin zona horaria y ajustar a Bogotá
+    df['fechaInicial'] = df['fechaInicial'].apply(lambda x: convert_to_bogota_timezone(x))
+    df['fechaFinal'] = df['fechaFinal'].apply(lambda x: convert_to_bogota_timezone(x))
+
+
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='openpyxl')
+    df.to_excel(writer, sheet_name='Permisos', index=False)
+    writer.close()
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=permisos.xlsx'
+    output.seek(0)
+    response.write(output.getvalue())
+    return response

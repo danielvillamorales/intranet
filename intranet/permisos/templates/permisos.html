@@ -78,6 +78,11 @@
         <a href="{% url 'nuevo_permiso'%}" class="material-symbols-outlined btn btn-sm btn-primary aling-center ms-3" role="button" title="Nuevo Permiso">
             add_circle
         </a>
+
+        <a class="btn btn-sm btn-success material-symbols-outlined m-1" title="Exportar Permisos"  id="exportButtonPermisos">
+            vertical_align_bottom
+        </a>
+
         <div id="divtablapermisos" class="table-wrapper-scroll-y my-custom-scrollbar mt-1 p-">
             <table class="table table-light table-striped table-sm" id="tablapermisos">
                 <thead class="table-primary table-hover">
@@ -212,4 +217,59 @@
         </nav>
         {% endif %}
     </div>
+
+    <script>
+    document.getElementById('exportButtonPermisos').addEventListener('click', function () {
+        Swal.fire({
+            title: 'Permisos Por Rango de Fechas',
+            html:
+                '<input type="date" class="form-control mt-1" id="fecha_inicial" required><br>' +
+                '<input type="date" class="form-control mt-1" id="fecha_final" required><br>'+
+                '<select class="form-select mt-1" id="motivo" name="motivo"> <option value="">---</option> {%for m in motivos %}<option value="{{m.id}}" >{{m.descripcion}}</option>{%endfor%}</select>',
+            showCancelButton: true,
+            confirmButtonText: 'Descargar Excel',
+            showLoaderOnConfirm: true,}).then((result) => {
+                if (result.isConfirmed) {
+                console.log(result);
+                const fecha_inicial = document.getElementById('fecha_inicial').value;
+                const fecha_final = document.getElementById('fecha_final').value;
+                const motivoElement = document.getElementById('motivo');
+                const motivo = motivoElement.options[motivoElement.selectedIndex].value;
+
+                console.log(motivo);
+                // Make an AJAX request to your Django view to generate the Excel file
+                return fetch("{% url 'export_permisos' %}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    
+                    body: `fecha_inicial=${fecha_inicial}&fecha_final=${fecha_final}&motivo=${motivo}`,
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = 'permisos.xlsx';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(error => {
+                        Swal.showValidationMessage(`Request failed: ${error}`);
+                    });
+                }
+                });      
+    });
+
+    </script>
+
     {% endblock %}
