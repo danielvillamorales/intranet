@@ -1,0 +1,59 @@
+
+@font-face {
+  font-family: Heycomic;
+  src: url('Hey Comic.otf');
+}
+
+@font-face {
+  font-family: wallnotes;
+  src: url('wallNotes.otf');
+}
+
+@font-face {
+  font-family: coolvetica;
+  src: url('coolveticarg.otf'),url('coolveticargit.otf'),url('coolveticacrammedrg.otf'),url('coolveticacondensedrg.otf');
+}
+
+
+.ocultar{
+  display: none;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Varela+Round");
+body {
+    background-image: url("../img/fondo.jpg") ;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    height:100vh;
+  }
+
+  img {
+    position: relative;
+    margin-top: 1%;
+    max-width: 80%;
+    filter: drop-shadow(4px 6px 10px rgba(0, 0, 0, 0.9));
+  }
+
+  h1{
+    font-family: coolvetica, sans-serif;
+    color: rgb(109, 109, 109);
+    margin-top: 6em;
+  }
+
+  p{
+    color: rgb(109, 109, 109);
+  }
+
+  @media (min-width: 0px) and (max-width: 550px) { 
+    img {
+      max-width: 100%;
+      margin-top: 5%;
+    }
+
+    h1{
+      margin-top: 1em;
+    }
+  }
