@@ -4,6 +4,15 @@ from directorio.models import *
 admin.site.register(Convenios)
 admin.site.register(LineasCelularesContratadas)
 
+
+@admin.register(Promociones)
+class promocionesAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'fecha_inicial','fecha_final','valor', 'banner')
+    search_fields = ('nombre', 'fecha_inicial','fecha_final','valor', 'banner')
+    list_filter = ('nombre', 'fecha_inicial','fecha_final','valor', 'banner')
+    ordering = ('id',)
+
+
 @admin.register(Did)
 class didAdmin(admin.ModelAdmin):
     list_display = ('indicativo', 'numero')
