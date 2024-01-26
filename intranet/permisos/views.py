@@ -393,19 +393,19 @@ def export_permisos(request):
             motivo = Tipodepermiso.objects.get(pk=int(id_motivo))
             print(motivo)
             cajas = Permisos.objects.filter(Q(tipopermiso=motivo)).filter((Q(fechaInicial__range=(fecha_inicial, fecha_final)) | Q(fechaFinal__range = (fecha_inicial, fecha_final)))).values_list(
-            'usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre')
+            'usuariodepermiso__username','usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre')
         else:
             print('tiene permisos de todos sin motivo')
             cajas = Permisos.objects.filter(Q(fechaInicial__range=(fecha_inicial, fecha_final)) | Q(fechaFinal__range = (fecha_inicial, fecha_final)) ).values_list(
-             'usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre'
+             'usuariodepermiso__username','usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre'
         )
     else:
         print('no tiene permisos')
         cajas = Permisos.objects.filter(Q(usuariodepermiso=user)).filter(Q(fechaInicial__range=(fecha_inicial, fecha_final)) | Q(fechaFinal__range = (fecha_inicial, fecha_final)) ).values_list(
-             'usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre'
+             'usuariodepermiso__username','usuariodepermiso__first_name','usuariodepermiso__last_name', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipopermiso__descripcion', 'beneficio__nombre'
         )
     print(cajas)
-    df = pd.DataFrame(cajas, columns=['nombre','apellidos', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipo de permiso', 'beneficio nombre'])
+    df = pd.DataFrame(cajas, columns=['codigo','nombre','apellidos', 'fechaInicial', 'fechaFinal', 'descripcion', 'tipo de permiso', 'beneficio nombre'])
     # Convertir los datetimes a formato sin zona horaria y ajustar a Bogotá
     df['fechaInicial'] = df['fechaInicial'].apply(lambda x: convert_to_bogota_timezone(x))
     df['fechaFinal'] = df['fechaFinal'].apply(lambda x: convert_to_bogota_timezone(x))
