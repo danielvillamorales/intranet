@@ -33,6 +33,13 @@ class UsuarioEncargado(models.Model):
     def __str__(self):
         return f'{self.usuario.first_name} {self.usuario.last_name} - {self.encargado.first_name} {self.encargado.last_name}'
     
+    def full_name_usuariopermiso(self):
+        return f'{self.usuario.first_name.capitalize()} {self.usuario.last_name.capitalize()}'
+    
+
+    def full_name_encargado(self):
+        return f'{self.encargado.first_name.capitalize()} {self.encargado.last_name.capitalize()}'
+    
 class Permisos(models.Model):
     usuariodecreacion = models.ForeignKey(User,on_delete=models.PROTECT,related_name='emails',db_column='emails',null=True,blank=True)
     usuariodepermiso = models.ForeignKey(User,on_delete=models.PROTECT,related_name='usernames',db_column='usernames')
