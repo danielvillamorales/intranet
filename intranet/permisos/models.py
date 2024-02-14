@@ -63,3 +63,19 @@ class Permisos(models.Model):
         ('ver_permisos_de_todos','ver_permisos_de_todos'),('aprobar_permisos','aprobar_permisos'),
         ('salida_y_entrada','salidad_y_entrada')
         ]
+
+
+class UsuarioHorarios(models.Model):
+    usuario  = models.ForeignKey(User,on_delete=models.PROTECT,related_name='usuariohorarios',db_column='usuario')
+    estado = models.IntegerField(default=1, null=False,help_text='estado 1:activo , 0:inactivo')
+
+    def __str__(self):
+        return f'{self.usuario.first_name} {self.usuario.last_name} estado: {self.estado}'
+
+
+class HorariosPorteria(models.Model):
+    usuario = models.ForeignKey(User,on_delete=models.PROTECT,related_name='usuariohorariosporteria',db_column='usuario')
+    fecha = models.DateField(null=False,blank=False)
+    horaentrada = models.TimeField(null=False,blank=False)
+    horasalida = models.TimeField(null=False,blank=False)
+    totalhoras = models.FloatField(null=False,blank=False)

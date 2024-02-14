@@ -12,7 +12,7 @@ import datetime
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from os import walk, getcwd, path
-from permisos.models import UsuarioEncargado
+from permisos.models import UsuarioEncargado, HorariosPorteria, UsuarioHorarios
 import json
 import pytz
 from datetime import time, datetime,date
@@ -420,3 +420,70 @@ def export_permisos(request):
     output.seek(0)
     response.write(output.getvalue())
     return response
+
+
+def generar_lista_semanas():
+  """
+  Genera una lista con las semanas del año y las fechas que las componen.
+
+  Args:
+    No hay.
+
+  Returns:
+    Una lista de diccionarios con la información de cada semana.
+  """
+  # Obtener la fecha actual
+  fecha_actual = date.today()
+
+  # Obtener el número de la semana actual
+  numero_semana_actual = fecha_actual.isocalendar().week
+
+  # Lista para almacenar las semanas
+  lista_semanas = []
+
+  # Recorrer las 52 semanas del año
+  for numero_semana in range(numero_semana_actual, 53):
+    # Obtener la fecha de inicio de la semana
+    fecha_inicio = date.fromisocalendar(fecha_actual.year, numero_semana, 1)
+
+    # Obtener la fecha de fin de la semana
+    fecha_fin = date.fromisocalendar(fecha_inicio.year, numero_semana_actual , 7)
+
+    # Agregar la información de la semana a la lista
+    lista_semanas.append(
+      f'numero_semana: {numero_semana}, fecha_inicio: {str(fecha_inicio)}, fecha_fin: {str(fecha_fin)}'
+    )
+
+  return lista_semanas
+
+
+def porteria_horarios(request):
+    if request.method == 'POST':
+        fecha_inicio = datetime.strptime(request.POST.get('fecha_inicio'), '%Y-%m-%d')
+        fecha_fin = datetime.strptime(request.POST.get('fecha_fin'), '%Y-%m-%d')
+        fecha_fin = fecha_fin.replace(hour=23, minute=59, second=59)
+    else :
+        fecha_inicio =  date.fromisocalendar(date.today().year, date.today().isocalendar().week , 1)
+        print(fecha_inicio)
+        fecha_fin = date.fromisocalendar(date.today().year, date.today().isocalendar().week , 7)
+        print(fecha_fin)
+    horarios = HorariosPorteria.objects.filter(fecha__range=(fecha_inicio,fecha_fin)).order_by('fecha','horaentrada','usuario')
+    return render(request,'porteria_horarios.html',{'horarios':horarios})
+
+
+def agregar_porteria_horarios(request):
+    usuarios_horarios = UsuarioHorarios.objects.filter(estado=1).values('usuario')
+    user_ids = [uh['usuario'] for uh in usuarios_horarios]
+    print(user_ids)
+    usuarios  = User.objects.filter( id__in = user_ids).order_by('first_name')
+    print(usuarios)
+    if request.method == 'POST':
+        fecha = datetime.strptime(request.POST.get('fecha'), '%Y-%m-%d')
+        usuario = get_object_or_404(User, pk=request.POST.get('usuario'))
+        horaentrada = datetime.strptime(request.POST.get('horaentrada'), '%H:%M')
+        horasalida = datetime.strptime(request.POST.get('horasalida'), '%H:%M')
+        totalHoras = horasalida.hour - horaentrada.hour
+        horario = HorariosPorteria(fecha=fecha, usuario=usuario, horaentrada=horaentrada, horasalida=horasalida, totalhoras=totalHoras)
+        horario.save()
+        return redirect('porteria_horarios')
+    return render(request,'agregar_horario_porteria.html',{'usuarios':usuarios})

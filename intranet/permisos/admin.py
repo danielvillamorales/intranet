@@ -26,3 +26,15 @@ class EncargadoAdmin(admin.ModelAdmin):
     def encargado_username(self, obj):
         return obj.encargado.username
     
+admin.site.register(UsuarioHorarios)
+@admin.register(HorariosPorteria)
+class HorariosPorteriaAdmin(admin.ModelAdmin):
+    list_display = ('usuario_username', 'fecha','horaentrada','horasalida')
+    search_fields = ('fecha','usuario__username','usuario__first_name','usuario__last_name','fecha')
+    ordering = ('fecha',)
+
+    def usuario_username(self, obj):
+        return f'{obj.usuario.username} {obj.usuario.first_name} {obj.usuario.last_name}' 
+
+
+    

@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from directorio.views import directorio, subir_archivo, descargar_pdf, archivo_detalle, desactivar_convenio, guardar_promocion, ver_promociones, ver_promocion,exportar_promociones, editar_convenio,ver_lineas_celular
-from permisos.views import export_permisos,sgc,permisos,agregar_permisos,aprobar_permisos,rechazar_permisos,salida_permisos,entrada_permisos,contenidojson,calidad,eliminar_permiso,permisos_encargado
+from permisos.views import export_permisos,sgc,permisos,agregar_porteria_horarios,agregar_permisos,aprobar_permisos,porteria_horarios,rechazar_permisos,salida_permisos,entrada_permisos,contenidojson,calidad,eliminar_permiso,permisos_encargado
 from cajas.views import cajas, addcajas, export_cajas, export_txt_contabilidad,ver_gastos,export_cajas_dos
 from utiles.views import menu_utiles, convertpdftoword, unir_pdfs
 from django.contrib.auth.views import LoginView,LogoutView
@@ -63,6 +63,8 @@ urlpatterns = [
     path('unir_pdfs/', unir_pdfs, name='unir_pdfs'),
     path('permisos_encargado/', permisos_encargado, name='permisos_encargado'),
     path('export_permisos/', export_permisos, name='export_permisos'),
+    path('porteria_horarios/', porteria_horarios, name='porteria_horarios'),
+    path('agregar_porteria_horarios/', agregar_porteria_horarios, name='agregar_porteria_horarios'),
 
 ]
 

@@ -1,0 +1,47 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    <div class="container-fluid">
+        <h3 class="text-secondary m-1">Horario Porteria</h3>
+        <hr>
+        <a href="{% url 'agregar_porteria_horarios'%}" class="material-symbols-outlined btn btn-sm btn-primary aling-center m-1" role="button" title="Nuevo Horario">
+            add_circle
+        </a>
+        <form method="post">
+            {% csrf_token%}
+            <div class="input-group mb-3">
+                <span class="input-group-text">Fecha Inicio</span>
+                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
+                <span class="input-group-text">Fecha Fin</span>
+                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </form>
+        <table class="table table-striped table-hover table-sm">
+            
+            <thead>
+                <tr>
+                    <th scope="col">Empleado</th>
+                    <th scope="col">Día</th>
+                    <th scope="col">Hora Inicio</th>
+                    <th scope="col">Hora Fin</th>
+                    <th scope="col">Total Horas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for horario in horarios %}
+                <tr>
+                    <td>{{ horario.usuario.first_name }} {{horario.usuario.last_name}}</td>
+                    <td>{{ horario.fecha }}</td>
+                    <td>{{ horario.horaentrada }}</td>
+                    <td>{{ horario.horasalida }}</td>
+                    <td> {{ horario.totalhoras}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

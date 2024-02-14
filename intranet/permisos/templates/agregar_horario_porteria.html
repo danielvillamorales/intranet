@@ -1,0 +1,36 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+
+<div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    <div class="container-fluid">
+        <h3 class="text-secondary"> Agregar Horario</h3>
+        <hr>
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <span class="input-group-text">Empleado</span>
+                <select class="form-select" id="usuario" name="usuario" required> 
+                    {% for usuario in usuarios %}
+                    <option value="{{usuario.id}}">{{usuario.first_name}} {{usuario.last_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Fecha</span>
+                <input type="date" class="form-control" id="fecha" name="fecha" required>
+
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Hora Inicio</span>
+                <input type="time" class="form-control" id="horaentrada" name="horaentrada" required>
+                <span class="input-group-text">Hora Salida</span>
+                <input type="time" class="form-control" id="horasalida" name="horasalida" required>
+            </div>
+            <button class="btn btn-primary">Agregar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+```
