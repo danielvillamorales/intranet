@@ -12,10 +12,10 @@ import datetime
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from os import walk, getcwd, path
-from permisos.models import UsuarioEncargado, HorariosPorteria, UsuarioHorarios
+from permisos.models import UsuarioEncargado, HorariosPorteria, UsuarioHorarios, CalendarioPorteria
 import json
 import pytz
-from datetime import time, datetime,date
+from datetime import time, datetime,date, timedelta
 import io
 import pandas as pd
 
@@ -421,69 +421,54 @@ def export_permisos(request):
     response.write(output.getvalue())
     return response
 
+def es_par(numero):
+    return numero % 2 == 0
+
 
 def generar_lista_semanas():
-  """
-  Genera una lista con las semanas del año y las fechas que las componen.
 
-  Args:
-    No hay.
+    
+    anio_actual = date.today().year
+    fecha_inicial  = date(anio_actual,2,12)
+    fecha_final = date(anio_actual,12,31)
+    lista_calendarios = []
 
-  Returns:
-    Una lista de diccionarios con la información de cada semana.
-  """
-  # Obtener la fecha actual
-  fecha_actual = date.today()
+    while fecha_inicial <= fecha_final:
+        calendario = CalendarioPorteria(fecha = fecha_inicial)
+        if (es_par(fecha_inicial.isocalendar().week)):
+            lista_horarios = HorariosPorteria.objects.filter(diasemana= fecha_inicial.weekday(), tipo__in = [0,2])            
+        else:
+            lista_horarios = HorariosPorteria.objects.filter(diasemana= fecha_inicial.weekday(), tipo__in = [1,0])
+        calendario.save()
+        calendario.horarios.add(lista_horarios)
+        calendario.save()
+        if fecha_inicial == fecha_final:
+            break
+        fecha_inicial = fecha_inicial + timedelta(days=1)
 
-  # Obtener el número de la semana actual
-  numero_semana_actual = fecha_actual.isocalendar().week
-
-  # Lista para almacenar las semanas
-  lista_semanas = []
-
-  # Recorrer las 52 semanas del año
-  for numero_semana in range(numero_semana_actual, 53):
-    # Obtener la fecha de inicio de la semana
-    fecha_inicio = date.fromisocalendar(fecha_actual.year, numero_semana, 1)
-
-    # Obtener la fecha de fin de la semana
-    fecha_fin = date.fromisocalendar(fecha_inicio.year, numero_semana_actual , 7)
-
-    # Agregar la información de la semana a la lista
-    lista_semanas.append(
-      f'numero_semana: {numero_semana}, fecha_inicio: {str(fecha_inicio)}, fecha_fin: {str(fecha_fin)}'
-    )
-
-  return lista_semanas
 
 
 def porteria_horarios(request):
     if request.method == 'POST':
-        fecha_inicio = datetime.strptime(request.POST.get('fecha_inicio'), '%Y-%m-%d')
-        fecha_fin = datetime.strptime(request.POST.get('fecha_fin'), '%Y-%m-%d')
-        fecha_fin = fecha_fin.replace(hour=23, minute=59, second=59)
+        if request.POST.get('mes', False) and request.POST.get('anio', False):
+            mes = request.POST.get('mes', False)
+            anio = request.POST.get('anio', False)
+        else:
+            print('entre aqui')
+            mes =  date.today().month
+            anio = date.today().year
+            
     else :
-        fecha_inicio =  date.fromisocalendar(date.today().year, date.today().isocalendar().week , 1)
-        print(fecha_inicio)
-        fecha_fin = date.fromisocalendar(date.today().year, date.today().isocalendar().week , 7)
-        print(fecha_fin)
-    horarios = HorariosPorteria.objects.filter(fecha__range=(fecha_inicio,fecha_fin)).order_by('fecha','horaentrada','usuario')
+        print('entre aqui else final')
+        mes =  date.today().month
+        anio = date.today().year
+    horarios = CalendarioPorteria.objects.filter(fecha__month = mes, fecha__year = anio ).order_by()
     return render(request,'porteria_horarios.html',{'horarios':horarios})
 
 
 def agregar_porteria_horarios(request):
-    usuarios_horarios = UsuarioHorarios.objects.filter(estado=1).values('usuario')
-    user_ids = [uh['usuario'] for uh in usuarios_horarios]
-    print(user_ids)
-    usuarios  = User.objects.filter( id__in = user_ids).order_by('first_name')
-    print(usuarios)
-    if request.method == 'POST':
-        fecha = datetime.strptime(request.POST.get('fecha'), '%Y-%m-%d')
-        usuario = get_object_or_404(User, pk=request.POST.get('usuario'))
-        horaentrada = datetime.strptime(request.POST.get('horaentrada'), '%H:%M')
-        horasalida = datetime.strptime(request.POST.get('horasalida'), '%H:%M')
-        totalHoras = horasalida.hour - horaentrada.hour
-        horario = HorariosPorteria(fecha=fecha, usuario=usuario, horaentrada=horaentrada, horasalida=horasalida, totalhoras=totalHoras)
-        horario.save()
-        return redirect('porteria_horarios')
-    return render(request,'agregar_horario_porteria.html',{'usuarios':usuarios})
+    if CalendarioPorteria.objects.filter(fecha__year=date.today().year).count() > 0:
+        messages.warning(request,'Ya se genero la lista de semanas para este año'); 
+    else:
+        generar_lista_semanas()
+    return redirect('porteria_horarios')

@@ -1,5 +1,7 @@
+from typing import Iterable
 from django.db import models
 from django.contrib.auth.models import User
+from datetime import datetime, date
 
 # Create your models here.
 class Tipodepermiso(models.Model):
@@ -70,12 +72,52 @@ class UsuarioHorarios(models.Model):
     estado = models.IntegerField(default=1, null=False,help_text='estado 1:activo , 0:inactivo')
 
     def __str__(self):
-        return f'{self.usuario.first_name} {self.usuario.last_name} estado: {self.estado}'
+        return f'{self.usuario.username} {self.usuario.first_name} {self.usuario.last_name} estado: {self.estado}'
 
 
 class HorariosPorteria(models.Model):
     usuario = models.ForeignKey(User,on_delete=models.PROTECT,related_name='usuariohorariosporteria',db_column='usuario')
-    fecha = models.DateField(null=False,blank=False)
     horaentrada = models.TimeField(null=False,blank=False)
     horasalida = models.TimeField(null=False,blank=False)
-    totalhoras = models.FloatField(null=False,blank=False)
+    totalhoras = models.FloatField(default=0, null=False,blank=False,help_text='total de horas')
+    tipo = models.IntegerField(default=1, null=False,help_text='tipo 1:horario , 2: horario 2')
+    diasemana = models.IntegerField(default=0, null=False,blank=False,help_text='0:lunes , 1:martes , 2:miercoles , 3:jueves , 4:viernes , 5:sabado , 6:domingo')
+    
+
+    def __str__(self):
+        return f'{self.usuario.first_name} {self.usuario.last_name}  entrada: {self.horaentrada} salida: {self.horasalida} total horas: {self.totalhoras} tipo: {self.tipo} dia: {self.diasemana}'
+    
+    def calculate_total_hours(self):
+        if not self.horaentrada or not self.horasalida:
+            return None  # Handle missing values if needed
+
+        # Convert to datetime objects with appropriate time zone handling
+        entrada_datetime = datetime.combine(date.today(), self.horaentrada)
+        salida_datetime = datetime.combine(date.today(), self.horasalida)
+
+        # Calculate time difference with desired precision
+        total_duration = salida_datetime - entrada_datetime
+        return total_duration.total_seconds() / 3600  # Convert to hours
+
+
+    def save(self, *args, **kwargs):
+        if self.horaentrada and self.horasalida:
+            self.totalhoras = self.calculate_total_hours()
+        super().save(*args, **kwargs)
+
+
+class CalendarioPorteria(models.Model):
+    fecha = models.DateField(null=False,blank=False)
+    semana = models.IntegerField(default=0, null=False,blank=False,help_text='semana 1:semana 1 , 2:semana 2 , 3:semana 3 , 4:semana 4')
+    horarios = models.ManyToManyField(HorariosPorteria, related_name='horarios',db_column='horarios')
+
+    def __str__(self):
+        return f'{self.fecha}'
+    
+    def caculate_semana(self):
+        return self.fecha.isocalendar().week
+    
+    def save(self, *args, **kwargs):
+        self.semana = self.caculate_semana()
+        return super().save(*args, **kwargs)
+    

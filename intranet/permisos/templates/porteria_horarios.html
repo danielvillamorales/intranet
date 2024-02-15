@@ -12,35 +12,53 @@
         <form method="post">
             {% csrf_token%}
             <div class="input-group mb-3">
-                <span class="input-group-text">Fecha Inicio</span>
-                <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio">
-                <span class="input-group-text">Fecha Fin</span>
-                <input type="date" class="form-control" id="fecha_fin" name="fecha_fin">
-                <button class="btn btn-primary" type="submit">Buscar</button>
+                <span class="input-group-text">Año a Consultar</span>
+                <input type="number" name="anio" id="anio" class="form-control">
+                <span class="input-group-text">Mes a Consultar</span>
+                <select  class="form-select" id="mes" name="mes">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <button class="btn btn-primary">Buscar</button>
             </div>
         </form>
-        <table class="table table-striped table-hover table-sm">
+    </div>
+    <div class="container-fluid">
+        <table class="table table-sm">
             
-            <thead>
-                <tr>
-                    <th scope="col">Empleado</th>
-                    <th scope="col">Día</th>
-                    <th scope="col">Hora Inicio</th>
-                    <th scope="col">Hora Fin</th>
-                    <th scope="col">Total Horas</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for horario in horarios %}
-                <tr>
-                    <td>{{ horario.usuario.first_name }} {{horario.usuario.last_name}}</td>
-                    <td>{{ horario.fecha }}</td>
-                    <td>{{ horario.horaentrada }}</td>
-                    <td>{{ horario.horasalida }}</td>
-                    <td> {{ horario.totalhoras}}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
+            {% for horario in horarios.all %}
+            <tr>
+                <td>
+                Semana: {{horario.semana}} - {{horario.fecha}}
+                </td>
+                <td>
+                    <ul class="list-group list-group-secondary">
+                        {% for h in  horario.horarios.all %}
+                        <li class="list-group-item mt-1">
+                            {{h.usuario.first_name}} {{h.usuario.last_name}} 
+                            <span class="badge bg-primary text-bg-secondary">
+                               Horario: {{h.horaentrada}} - {{h.horasalida}}
+                            </span> 
+                            <span class="badge bg-success">
+                                Horas: {{ h.totalhoras}}
+                            </span>
+                        </li>
+                         {% endfor%}
+                    </ul>
+                </td>
+
+            </tr>
+            {% endfor %}
         </table>
     </div>
 </div>

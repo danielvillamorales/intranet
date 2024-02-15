@@ -29,12 +29,13 @@ class EncargadoAdmin(admin.ModelAdmin):
 admin.site.register(UsuarioHorarios)
 @admin.register(HorariosPorteria)
 class HorariosPorteriaAdmin(admin.ModelAdmin):
-    list_display = ('usuario_username', 'fecha','horaentrada','horasalida')
-    search_fields = ('fecha','usuario__username','usuario__first_name','usuario__last_name','fecha')
-    ordering = ('fecha',)
+    list_display = ('usuario_username','horaentrada','horasalida', 'tipo', 'diasemana', 'totalhoras')
+    search_fields = ('usuario__username','usuario__first_name','usuario__last_name')
+    ordering = ('id',)
 
     def usuario_username(self, obj):
         return f'{obj.usuario.username} {obj.usuario.first_name} {obj.usuario.last_name}' 
 
 
     
+admin.site.register(CalendarioPorteria)
