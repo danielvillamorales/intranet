@@ -87,6 +87,12 @@ class HorariosPorteria(models.Model):
     def __str__(self):
         return f'{self.usuario.first_name} {self.usuario.last_name}  entrada: {self.horaentrada} salida: {self.horasalida} total horas: {self.totalhoras} tipo: {self.tipo} dia: {self.diasemana}'
     
+    def horasreales(self):
+        if self.totalhoras:
+            return self.totalhoras  - 0.66
+        else:
+            return 0
+
     def calculate_total_hours(self):
         if not self.horaentrada or not self.horasalida:
             return None  # Handle missing values if needed

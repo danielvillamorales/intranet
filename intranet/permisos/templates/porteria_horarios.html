@@ -42,15 +42,18 @@
                 Semana: {{horario.semana}} - {{horario.fecha}}
                 </td>
                 <td>
-                    <ul class="list-group list-group-secondary">
+                    <ul class="list-group list-group-secondary color{{horario.semana}}">
                         {% for h in  horario.horarios.all %}
                         <li class="list-group-item mt-1">
                             {{h.usuario.first_name}} {{h.usuario.last_name}} 
-                            <span class="badge bg-primary text-bg-secondary">
+                            <span style="padding: 2px; background-color: rgb(4, 4, 123);color: white; margin-left: 2px;">
                                Horario: {{h.horaentrada}} - {{h.horasalida}}
                             </span> 
-                            <span class="badge bg-success">
-                                Horas: {{ h.totalhoras}}
+                            <span style="padding: 2px; background-color: rgb(2, 105, 96);color: white;margin-left: 2px;">
+                                Horas: {{ h.totalhoras}}   -40 min Almuerzo
+                            </span>
+                            <span style="padding: 2px; background-color: rgb(105, 2, 96);color: white;margin-left: 2px;">
+                               Total: {{h.horasreales}}
                             </span>
                         </li>
                          {% endfor%}
