@@ -1,0 +1,68 @@
+
+{% extends "layout.html" %}
+{% block content %}
+{% load static %}
+<div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12 col-12" id="contenido_directorio" >
+    <div class="container-fluid">
+        <h3 class="text-secondary m-1">Horario Porteria</h3>
+        <hr>
+        <a href="{% url 'agregar_porteria_horarios'%}" class="material-symbols-outlined btn btn-sm btn-primary aling-center m-1" role="button" title="Nuevo Horario">
+            add_circle
+        </a>
+        <form method="post">
+            {% csrf_token%}
+            <div class="input-group mb-3">
+                <span class="input-group-text">Año a Consultar</span>
+                <input type="number" name="anio" id="anio" class="form-control">
+                <span class="input-group-text">Mes a Consultar</span>
+                <select  class="form-select" id="mes" name="mes">
+                    <option value="1">Enero</option>
+                    <option value="2">Febrero</option>
+                    <option value="3">Marzo</option>
+                    <option value="4">Abril</option>
+                    <option value="5">Mayo</option>
+                    <option value="6">Junio</option>
+                    <option value="7">Julio</option>
+                    <option value="8">Agosto</option>
+                    <option value="9">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+                <button class="btn btn-primary">Buscar</button>
+            </div>
+        </form>
+    </div>
+    <div class="container-fluid">
+        <table class="table table-sm">
+            
+            {% for horario in horarios.all %}
+            <tr>
+                <td>
+                Semana: {{horario.semana}} - {{horario.fecha}}
+                </td>
+                <td>
+                    <ul class="list-group list-group-secondary color{{horario.semana}}">
+                        {% for h in  horario.horarios.all %}
+                        <li class="list-group-item mt-1">
+                            {{h.usuario.first_name}} {{h.usuario.last_name}} 
+                            <span style="padding: 2px; background-color: rgb(4, 4, 123);color: white; margin-left: 2px;">
+                               Horario: {{h.horaentrada}} - {{h.horasalida}}
+                            </span> 
+                            <span style="padding: 2px; background-color: rgb(2, 105, 96);color: white;margin-left: 2px;">
+                                Horas: {{ h.totalhoras}}   -40 min Almuerzo
+                            </span>
+                            <span style="padding: 2px; background-color: rgb(105, 2, 96);color: white;margin-left: 2px;">
+                               Total: {{h.horasreales}}
+                            </span>
+                        </li>
+                         {% endfor%}
+                    </ul>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+{% endblock %}

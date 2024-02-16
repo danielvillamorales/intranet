@@ -16,6 +16,7 @@
                 <input type="number" name="anio" id="anio" class="form-control">
                 <span class="input-group-text">Mes a Consultar</span>
                 <select  class="form-select" id="mes" name="mes">
+                    <option disables>---</option>
                     <option value="1">Enero</option>
                     <option value="2">Febrero</option>
                     <option value="3">Marzo</option>
@@ -34,35 +35,50 @@
         </form>
     </div>
     <div class="container-fluid">
-        <table class="table table-sm">
-            
-            {% for horario in horarios.all %}
-            <tr>
-                <td>
-                Semana: {{horario.semana}} - {{horario.fecha}}
-                </td>
-                <td>
-                    <ul class="list-group list-group-secondary color{{horario.semana}}">
-                        {% for h in  horario.horarios.all %}
-                        <li class="list-group-item mt-1">
-                            {{h.usuario.first_name}} {{h.usuario.last_name}} 
-                            <span style="padding: 2px; background-color: rgb(4, 4, 123);color: white; margin-left: 2px;">
-                               Horario: {{h.horaentrada}} - {{h.horasalida}}
-                            </span> 
-                            <span style="padding: 2px; background-color: rgb(2, 105, 96);color: white;margin-left: 2px;">
-                                Horas: {{ h.totalhoras}}   -40 min Almuerzo
-                            </span>
-                            <span style="padding: 2px; background-color: rgb(105, 2, 96);color: white;margin-left: 2px;">
-                               Total: {{h.horasreales}}
-                            </span>
-                        </li>
-                         {% endfor%}
-                    </ul>
-                </td>
-
-            </tr>
-            {% endfor %}
-        </table>
+        <div id="calendario"></div>
     </div>
+    
 </div>
+
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('entro');
+      var calendarEl = document.getElementById('calendario');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        locale:'es',
+        events: [
+                {% for calendario in horarios.all %}
+                    {% for  horario in calendario.horarios.all %}   
+                         {
+                            title: "{{horario.usuario.first_name}} {{horario.usuario.last_name}}",
+                            descripcion: "{{horario.horaentrada}} A {{horario.horasalida}} -> {{horario.horasreales}}h",
+                            start: '{{ calendario.fecha|date:"Y-m-d" }}',
+                        },
+                    {% endfor %}
+                {% endfor %}
+            ],
+             // Color de fondo del calendario
+            eventBackgroundColor: '#0C0254', // Color de fondo de los eventos
+            eventTextColor: 'white', // Color del texto de los eventos   
+            headerToolbar: {
+                center: '',
+                end: ''
+            }, 
+            eventContent: function(arg) {
+                return {
+                    html: '<div class="fc-content">' +
+                            '<div class="fc-title">' + arg.event.title + '</div>' +
+                            '<div class="fc-description" style="background-color:white; color: black;font-size:10px">' + arg.event.extendedProps.descripcion + '</div>' +
+                          '</div>'
+                };
+            },
+      });
+      calendar.gotoDate('{{horarios.0.fecha |date:"Y-m-d"}}');
+      calendar.render();
+    });
+
+  </script>
 {% endblock %}
