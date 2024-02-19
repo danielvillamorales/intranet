@@ -440,7 +440,7 @@ def generar_lista_semanas():
         else:
             lista_horarios = HorariosPorteria.objects.filter(diasemana= fecha_inicial.weekday(), tipo__in = [1,0])
         calendario.save()
-        calendario.horarios.add(lista_horarios)
+        calendario.horarios.add(*lista_horarios)
         calendario.save()
         if fecha_inicial == fecha_final:
             break
