@@ -431,7 +431,6 @@ def generar_lista_semanas():
     anio_actual = date.today().year
     fecha_inicial  = date(anio_actual,2,12)
     fecha_final = date(anio_actual,12,31)
-    lista_calendarios = []
 
     while fecha_inicial <= fecha_final:
         calendario = CalendarioPorteria(fecha = fecha_inicial)
